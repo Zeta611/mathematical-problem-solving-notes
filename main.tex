@@ -1,0 +1,95 @@
+\documentclass[a4paper, 10pt, twoside, calcwidth]{oblivoir}
+\usepackage[left=3.5cm,right=3.5cm,top=3.5cm,bottom=3.5cm, a4paper]{geometry}
+\usepackage{subfiles}
+\usepackage{amsmath, amssymb, amsthm, amsfonts}
+\usepackage{upgreek}
+\usepackage{titlesec}
+\usepackage{titletoc}
+\usepackage{stmaryrd}
+\usepackage{float}
+\usepackage{mathpazo}
+\usepackage{mathtools}
+\usepackage[datesep={-}]{datetime2}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LO]{\fontsize{9}{11}\selectfont\textsf{Problem Solving in Mathematics Solution Manual}}
+\fancyhead[LE]{\fontsize{9}{11}\selectfont\textsf\rightmark}
+\fancyhead[R]{\fontsize{9}{11}\selectfont\textsf\thepage}
+
+\newtheorem{thm}{Theorem}[section]
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{ex}[thm]{Example}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{prob}[thm]{Problem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{ax}{Axiom}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{exercise}{Exercise}[section]
+
+\newenvironment{sol}
+{\renewcommand\qedsymbol{$\blacksquare$}\begin{proof}[Solution]}
+{\end{proof}}
+
+\renewcommand{\contentsname}{\normalfont\Large\bfseries\sffamily\color{black!60}{Contents}}
+
+\newlength\myseclen
+\setlength\myseclen{\dimexpr\oddsidemargin+\hoffset\relax-0.9em}
+\newlength\mysubseclen
+\setlength\mysubseclen{\dimexpr\oddsidemargin+\hoffset\relax}
+
+\titleformat{\section}
+{\normalfont\Large\bfseries\sffamily\color{black!60}}{\llap{\hspace*{-\myseclen}\thesection\hfill}}{0em}{}
+
+\titleformat{\subsection}
+{\normalfont\large\bfseries\sffamily\color{black!60}}{\llap{\hspace*{-\mysubseclen}\thesubsection\hfill}}{0em}{}
+
+\begin{document}
+
+\begin{center}\sffamily
+\text{ }\\[1cm]
+\huge Problem Solving in Mathematics Solution Manual
+
+\vspace{.1cm}
+\Large Example Proofs and Solutions for Theorems and Problems\\[.6cm]
+	\begin{tabular} {c c}
+		15-076 & v0.1\\
+		이재호 & \today
+	\end{tabular}
+\end{center}
+\vspace{.5cm}
+\noindent\rule[0.5ex]{\linewidth}{.5pt}
+\tableofcontents*
+\section{Sets}
+
+\subfile{sections/section1}
+
+\section{Language of Mathematics}
+
+\subfile{sections/section2}
+
+\section{Inequalitites}
+
+\subfile{sections/section3}
+
+\section{Induction}
+
+\subfile{sections/section4}
+
+\section{Bijections and Cardinality}
+
+\subfile{sections/section5}
+
+\section{Combinatorial Reasoning}
+
+\subfile{sections/section6}
+
+\section{Introduction to Groups}
+
+\subfile{sections/section9}
+
+\end{document}

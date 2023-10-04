@@ -1,0 +1,374 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+\subsection{Arrangements and Selection}
+\begin{defn}
+    A \textsf{partition} of a set $A$ is a collection of pairwise disjoint subsets of $A$ whose union is $A$.
+    The \textsf{rule of sum} states that if $A$ is finite and $B_1, \dots, B_m$ is a partition of $A$, then $|A| = \sum_{i = 1}^m |B_i|$.
+\end{defn}
+
+\begin{prob}
+    Prove the rule of sum.
+\end{prob}
+\begin{proof}
+    The rule of sum follows directly from Corollary~\ref{cor:sum_disjoint}.
+\end{proof}
+
+\begin{defn}
+    Let $T$ be a set whose elements can be described using a procedure involving steps $S_1, \dots, S_k$ such that step $S_i$ can be performed in $r_i$ ways, regardless of how steps $S_1, \dots, S_{i-1}$ are performed.
+    The \textsf{rule of product} states that $|T| = \prod_{i=1}^k r_i$.
+\end{defn}
+
+\begin{prob}
+    Prove the rule of product.
+\end{prob}
+\begin{proof}
+    We use induction $n$, the number of procedures needed to describe elements in $T$.
+    For the case $n = 1$, $|T| = r_1$, so the given statement holds.
+    Assume now as an induction hypothesis that $|T| = \prod_{i = 1}^k r_i$ for some $k \geq 2$.
+    Now when $k + 1$ steps are needed to perform elements of $T$, $k$ steps should be performed before the $(k+1)$-th one.
+    Performing $k + 1$ steps before the $(k+1)$-th one takes $R = \prod_{i=1}^k r_i$ ways from the induction hypothesis.
+    Since each way of performing the $(k+1)$-th step is distinct, the rule of sum applies:
+    \[
+        |T| = \sum_{i=1}^{R} r_{k+1} = Rr_{k+1} = \prod_{i=1}^{k+1} r_i.
+    \]
+    Therefore, the rule of product holds for any number of steps from the induction principle.
+\end{proof}
+
+\begin{defn}
+    A \textsf{permutation} of a finite set $S$ is a bijection from $S$ to itself.
+    The \textsf{word form} of a permutation of $[n]$ is the list obtained by writing the image of $i$ in position $i$.
+\end{defn}
+\begin{ex}
+    The word form of a permutation simply records the function; for example, $f: [3] \rightarrow [3]$ defined by $f(1) = 2$, $f(2) = 3$, and $f(3) = 1$ is the permutation with word form 231.
+    We often use the term permutation for botht the function and the word form.
+\end{ex}
+
+In counting problems, we use the word \textsf{arrangements} to refer to lists formed from a specified set.
+We generalize permutations by considering arrangements without repetition.
+
+\begin{thm} \label{thm:perm}
+    An $n$-element set has $n!$ permutations (arrangements without repetition).
+    In general, the number of arrangements of $k$ distinct elements from a set of size $n$ is $n(n -1) \dots (n - k + 1)$.
+\end{thm}
+\begin{proof}
+    This is a direct result of the rule of product.
+\end{proof}
+
+\begin{defn}
+    A \textsf{selection} of $k$ elements from $[n]$ is a $k$-element subset of $[n]$.
+    The number of such selection is $n$ \textsf{choose} $k$, written as $n \choose k$.
+    If $k < 0$ or $k > n$, $n \choose k$ is 0; in these cases, there are no selection of $k$ elements from $[n]$.
+\end{defn}
+
+\begin{thm} \label{thm:comb}
+    For integer $n$, $k$ with $0 \leq k \leq n$,
+    \[
+        {n \choose k} = \frac{n!}{k! (n - k)!}.
+    \]
+\end{thm}
+\begin{proof}
+    From Theorem~\ref{thm:perm}, there are $n(n-1) \dots (n-k+1)$ permutations of length $k$ from $n$ elements.
+    This is equal to selecting $k$ elements from $n$ elements and making a permutation out of the selection, i.e., ${n \choose k} \cdot k!$.
+    Thus, we have the following relation:
+    \[
+        n(n-1) \dots (n-k+1) = \frac{n!}{(n-k)!} = {n \choose k} \cdot k!.
+    \]
+    Therefore, ${n \choose k} = \frac{n!}{k! (n-k)!}$.
+\end{proof}
+
+\begin{prob} [Comparison of Poker Hands]
+    A poker hand consists of five cards from an ordinary deck of cards.
+    Find the number of cases for the following:
+    \begin{enumerate}
+        \item One pair
+        \item Two pair
+        \item Three of a kind
+        \item Straight
+        \item Flush
+        \item Full house
+        \item Four of a kind
+        \item Straight flush
+    \end{enumerate}
+\end{prob}
+\begin{sol}
+    \noindent \textbf{1. One pair}\\
+    \indent Choose a rank of the pair: 13.
+    Choose two suits of the pair: $4 \choose 2$.
+    Choose ranks of the rest of the cards: $12 \choose 3$.
+    Choose suits of the rest of the cards: $4^3$.
+    The overall number of cases is ${13 \choose 1}{4 \choose 2}{12 \choose 3}4^3 = 1,098,240$.
+
+    \noindent \textbf{2. Two pair}\\
+    \indent Choose ranks of the two pairs: $13 \choose 2$.
+    Choose two suits of the pairs: ${4 \choose 2}^2$.
+    Choose a rank of the left card: 11.
+    Choose a suit of the left card: 4.
+    The overall number of cases is ${13 \choose 2}{4 \choose 2}^2 \cdot 11 \cdot 4 = 123,552$
+
+    \noindent \textbf{3. Three of a kind}\\
+    \indent Choose a rank of the three: 13.
+    Choose three suits of the three: $4 \choose 3$.
+    Choose ranks of the other two cards: $12 \choose 2$.
+    Choose suits of the other two cards: $4^2$.
+    The overall number of cases is $13 \cdot {4 \choose 3} {12 \choose 2} \cdot 4^2 = 54,912$.
+
+    \noindent \textbf{4. Straight}\\
+    \indent Choose the consecutive ranks (ace to 5, 10 to ace): 10.
+    Choose a suit for each card, but all are not the same: $4^5 - 4$.
+    The overall number of cases is: $10(4^5 - 4) = 10,200$.
+
+    \noindent \textbf{5. Flush}\\
+    \indent Choose the suit for the flush: 4.
+    Choose a rank for each card, but not consecutive: ${13 \choose 5} - 10$.
+    The overall number of cases is $4 \left({13 \choose 5} - 10\right) = 5,108$.
+
+    \noindent \textbf{6. Full house}\\
+    \indent Choose ranks for the three and the pair: $13 \cdot 12$.
+    Choose a suit for the three: $4 \choose 3$.
+    Choose a suit for the pair: $4 \choose 2$.
+    The overall number of cases is $13 \cdot 12 \cdot {4 \choose 3}{4 \choose 2} = 3,744$.
+
+    \noindent \textbf{7. Four of a kind}\\
+    \indent Choose a rank for the four: 13.
+    Choose the left card: 48.
+    The overall number of cases is: $13 \cdot 48 = 624$.
+
+    \noindent \textbf{8. Straight flush}\\
+    \indent Choose the consecutive ranks (ace to 5, 10 to ace): 10.
+    Choose a suit for the flush: 4.
+    The overall number of cases is $10 \cdot 4 = 40$.
+\end{sol}
+
+The number $n \choose k$ is called the \textbf{binomial coefficient} due to its appearance as a coefficient in the $n$-th power of a sum of two terms.
+\begin{thm} [Binomial Theorem]
+    \[
+        (x + y)^n = \sum_{i = 0}^n {n \choose i} x^i y^{n-i}
+    \]
+\end{thm}
+\begin{proof}
+    We can choose either $x$ or $y$ from $n$ terms of $x + y$.
+    The number of cases to choose $x$, $i$ times and $y$, $(n-1)$ times is ${n \choose i}{n-i \choose n-i} = {n \choose i}$.
+    Therefore,
+    \[
+        (x + y)^n = \sum_{i=0}^n {n \choose i} x^i y^{n-i}.
+    \]
+\end{proof}
+
+\subsection{Binomial Coefficients}
+\begin{lem}
+    \[
+        {n \choose k} = {n \choose n - k}
+    \]
+\end{lem}
+\begin{proof}
+    Consider a set $S$ where $|S| = n$.
+    Choosing a subset $T$ with $k$ elements is equal to choosing a subset $S - T$ with $n - k$ elements.
+    Therefore, ${n \choose k} = {n \choose n - k}$.
+\end{proof}
+
+\begin{defn}
+    A \textsf{lattice path} in the plane is a path joining integer points via steps of unit length rightward or upward.
+    Alternatively, it is a list of ordered pairs of integers, with each step increasing one coordinate by 1.
+    The \textsf{length} of a path is the total number of steps.
+\end{defn}
+
+\begin{ex} [Lattice Paths and Binary Lists]
+    We start lattice paths at the origin.
+    Since each step increases a coordinate by 1, the length of the walk is the sum of the coordinates of the ending point.
+    We can encode a path by recording in position $i$ as 1, when the $i$-th step is rightward and 0, when the $i$-th step is upward.
+    In a path of length $n$, if there are $k$ steps to the right, we reach the point $(k, n - k)$, and the encoding has $k$ 1's.
+
+    Furthermore, the actual path is determined by which steps are taken to the right.
+    Thus the path is determined by the binary $n$-tuple.
+    This establishes a one-to-one correspondence between the lattice paths reaching $(k, n - k)$ and the binary $n$-tuples with $k$ 1's.
+    Hence the number of a lattice path $(k, n - k)$ is $n \choose k$.
+\end{ex}
+
+\begin{prop}
+    For nonnegative integers $a$ and $b$, the number of lattice paths from the origin to the point $(a, b)$ is $a + b \choose a$.
+\end{prop}
+\begin{proof}
+    Lattice paths from the origin to the point $(a, b)$ is composed of $a$ 1's and $b$ 0's.
+    Since there is a one-to-one correspondence between each path and binary $(a + b)$-tuples with $a$ 1's, we can simply count the number of the binary tuples.
+    We should choose $a$ places to locate 1's out of $a + b$ places, which is $a + b \choose a$.
+\end{proof}
+
+The triangular array of number in which row $n$ consists of all the binomial coefficients with $n$ on top (starting with row 0) is called \textsf{Pascal's triagle}.
+\begin{lem} [Pascal's Formula] \label{lem:pascal}
+    If $n \geq 1$, then
+    \[
+        {n \choose k} = {n - 1 \choose k} + {n - 1 \choose k - 1}.
+    \]
+\end{lem}
+\begin{proof}
+    Consider a nonempty set $S$ with $n$ elements.
+    Suppose we choose $k$ elements from $S$ to construct a subset $T$.
+    Choose any element $a \in S$.
+    Then either $a \in T$ or $a \notin T$.
+    The two cases are disjoint.
+    For the case $a \in T$, we need to choose other $k - 1$ elements from $S \backslash \{a\}$, which has $n - 1 \choose k - 1$ cases.
+    For the case $a \notin T$, we need to choose $k$ elements from $S \backslash \{a\}$, which has $n - 1 \choose k$ cases.
+    From the rule of sum, the total number of cases is ${n - 1 \choose k - 1} + {n - 1 \choose k}$.
+    A simpler way of counting $T$'s is just to choose $k$ elements from $n$, which is $n \choose k$.
+    Therefore, ${n \choose k} = {n - 1 \choose k} + {n - 1 \choose k - 1}$.
+\end{proof}
+
+\begin{thm} 
+    With repetition allowed, there are $n + k - 1 \choose k - 1$ ways to select $n$ objects from $k$ types.
+    This is also equal to the number of nonnegative integer solutions to $x_1 + \dots + x_k = n$.
+\end{thm}
+\begin{proof}
+    We first show that choosing $n$ objects from $k$ types is equivalent to the number of nonnegative integer solutions to $x_1 + \dots + x_k = n$.
+    Let $x_i$ be the number of objects chosen from the $i$-th type.
+    Since total $n$ objects are chosen, $\sum_{i = 0}^k x_i = n$.
+    Thus, we aim to show that the number of nonnegative integer solutions is $n + k - 1 \choose k - 1$.
+
+    The problem of finding the number of nonnegative integer solutions of $\sum_{i=0}^k x_i = n$ corresponds to arranging $n$ $\square$'s and $k - 1$ /'s:
+    \[
+        \underbrace{\square \square \dots \square}_n \underbrace{/ / \dots /}_{k-1},
+    \]
+    where the number of $\square$'s in the $i$-th spacing created by /'s corresponds to $x_i$.
+    The number of cases is to place $k - 1$ /'s in $n + k - 1$ positions: $n + k - 1 \choose k - 1$.
+\end{proof}
+
+\begin{prob} [Nonnegative Integer Solutions]
+    Suppose that each resident of New York City has 100 coins in a jar.
+    The coins come in five types.
+    We consider two jars of coins to be equivalent if they have same number of coins of each type.
+    Is it possible that no two people have equivalent jars of coins?
+\end{prob}
+\begin{sol}
+    Let the number of each type of coin is $x_i$.
+    Then, the number of possible combinations of the coins is equal to the number of nonnegative integer solutions of $\sum_{i=1}^5 x_i = 100$.
+    The number of the solutions is ${100 + 5 - 1 \choose 5 - 1} = {104 \choose 4} = 4,598,126$.
+    The population of NYC is 8.41 million as of 2013.
+    From the pigeon hole principle, there are at least two people with the equivalent jars--though the principle is yet to be introduced.
+\end{sol}
+
+\begin{cor}
+    The expansion of $\left( \sum_{i=1}^m x_i \right)^d$ has $d + m - 1 \choose m - 1$ terms.
+\end{cor}
+\begin{proof}
+    Possible form of terms from the expansion of $\left( \sum_{i=1}^m x_i \right)^d$ is $x_1^{\alpha_1} x_2^{\alpha_2} \dots x_m^{\alpha_m}$, where $\sum_{i=1}^m \alpha_i = d$, and each $\alpha_i$ is a nonnegative integer.
+    Thus, it has $d + m - 1 \choose m - 1$ terms.
+\end{proof}
+
+\begin{lem} [The Chairperson Identity]
+    \[
+        k {n \choose k} = n {n - 1 \choose k - 1}
+    \]
+\end{lem}
+\begin{proof}
+    Let $S$ be a set with $n$ elements.
+    We shall choose a subset $T$ of $S$ and again choose an arbitrary element from $T$, where $|T| = k$.
+    Then, choosing $T$ has $n \choose k$ number of cases, and choose one element from it has $k$ number of cases.
+    Thus, the overall number of cases is $k {n \choose k}$.
+
+    We can construct $T$ and the element from it in a slightly different manner: first choose any element from $S$ and then choose $k - 1$ elements from $S$ to construct $T$.
+    Choosing any element $e$ from $S$ has $n$ number of cases, and choosing $k - 1$ elements from $S \backslash \{e\}$ has $n - 1 \choose k - 1$ number of cases.
+    Thus, the number of cases of the whole procedure is $n {n - 1 \choose k - 1}$.
+    Therefore, we have the desired relation.
+\end{proof}
+
+\begin{thm} [The Summation Identity] \label{thm:bin_sum}
+    \[
+        \sum_{i=0}^n {i \choose k} = {n + 1 \choose k + 1}
+    \]
+\end{thm}
+\begin{proof}
+    We use induction on $n$.
+    Consider the base case $n = 0$.
+    Then the left hand side becomes
+    \[
+        \sum_{i=0}^n {i \choose k} = {0 \choose k} = \begin{cases}
+            1 &\text{if } k = 0\\
+            0 &\text{otherwise}
+        \end{cases},
+    \]
+    whereas the right hand side becomes
+    \[
+        {1 \choose k + 1} = \begin{cases}
+            1 &\text{if } k = 0\\
+            0 &\text{otherwise}
+        \end{cases}.
+    \]
+    Thus the given relationship holds for the base case.
+
+    Let us suppose the given relationship holds for some $n = l \geq 1$.
+    Then, 
+    \begin{align*}
+        \sum_{i=0}^{l+1} {i \choose k} &= \sum_{i=0}^l {i \choose k} + {l+1 \choose k}\\
+                                       &= {l + 1 \choose k + 1} + {l + 1 \choose k} &\text{by the induction hyp.}\\
+                                       &= {l + 2 \choose k + 1} &\text{by Lemma~\ref{lem:pascal}}
+    \end{align*}
+    Therefore, from the induction principle, the given relationship holds for all $n \in \mathbb{N} \cup \{0\}$.
+\end{proof}
+
+\begin{ex} [Summation of Integer Power]
+    Formulas for sums of powers are easy to verify by induction but difficult to gues.
+    Theorem~\ref{thm:bin_sum} provides a method that automatically generates both the answer and the proof.
+    Notice that $i = {i \choose 1}$.
+    Therefore, Theorem~\ref{thm:bin_sum} proves the summation formula for the first $n$ natural numbers by 
+    \[
+        \sum_{i=0}^n i = \sum_{i=0}^n {i \choose 1} = {n + 1 \choose 2} = \frac{n(n+1)}{2}.
+    \]
+    For the squares, we rewrite $i^2$ using binomial coefficients.
+    Since $i^2 = 2 {i \choose 2} + {i \choose 1}$, we have
+    \begin{align*}
+        \sum_{i=0}^n i^2 &= 2 \sum_{i=0}^n {i \choose 2} + \sum_{i=0}^n {i \choose 1}\\
+                         &= 2 {n+1 \choose 3} + {n+1 \choose 2}\\
+                         &= \frac{n(n+1)(2n+1)}{6}.
+    \end{align*}
+    This approach yields $\sum_{k=0}^n f(k)$ for any polynomial $f$.
+\end{ex}
+
+\begin{thm}
+    For $k \in \mathbb N$, the value of $\sum_{i=1}^n i^k$ is a polynomial in $n$ with the leading term $\frac{1}{k+1} n^{k+1}$ and the next term $\frac 12 n^k$.
+\end{thm}
+\begin{proof}
+    $i^k$ can be written as:
+    \[
+        i^k = a_k {i \choose k} + a_{k-1} {i \choose k - 1} + \dots + a_1 {i \choose 1}.
+    \]
+    Thus we have
+    \begin{align*}
+        \sum_{i=0}^n i^k &= a_k \sum_{i=1}^n {n + 1 \choose k + 1} + a_{k - 1} \sum_{i=1}^n {n + 1 \choose k} + \dots + a_1 \sum_{i=1}^n {n + 1 \choose 1}\\
+                         &= a_k {n + 1 \choose k + 1} + a_{k-1} {n + 1 \choose k} + \dots + a_1 {n +  1 \choose 2}\\
+                         &= a_k O(n^{k+1}) + a_{k-1} O(n^k) + O(n^{k-1}).
+    \end{align*}
+    To find the coefficient of the $n^{k+1}$ and $n^k$, we only need to consider $a_k$ and $a_{k-1}$.
+    Before getting the exact form of $a_k$ and $a_{k+1}$, we find the coefficients of $n^{k+1}$ and $n^k$ about $a_k$ and $a_{k+1}$.
+    \begin{align*}
+        a_k {n + 1 \choose k + 1} &= a_k \frac{(n + 1)!}{(k + 1)! (n - k)!}\\
+                                  &= a_k \frac{(n + 1) n \dots (n - (k - 1))}{(k + 1)!}\\
+                                  &= \frac{a_k}{(k + 1)!} \left(n^{k + 1} + (1 - 1 - 2 - \dots - (k-1)) n^k + O(n^{k - 1})\right)\\
+                                  &= \frac{a_k}{(k + 1)!} \left(n^{k + 1} + \left(1 - \frac{k(k-1)}{2}\right) n^k + O(n^{k - 1})\right)\\
+                                  &= \frac{a_k}{(k + 1)!} n^{k + 1} + \frac{a_k}{(k+1)!}\frac{-k^2 + k + 2}{2} n^k + O(n^{k-1})\\
+    a_{k-1} {n + 1 \choose k} &= a_{k - 1} \frac{(n + 1)!}{k! (n + 1 - k)!}\\
+                              &= a_{k-1} \frac{(n+1)n \dots (n - (k-2))}{k!}\\
+                              &= \frac{a_{k-1}}{k!} n^k + O(n^{k-1})\\
+    \end{align*}
+    Thus, we have
+    \[
+        \sum_{i = 0}^n i^k = \frac{a_k}{(k + 1)!} n^{k + 1} + \left( \frac{a_k}{(k + 1)!} \frac{- k^2 + k + 2}{2} + \frac{a_{k-1}}{k!}\right) n^k + O(n^{k-1}).
+    \]
+
+    To get $a_k$ and $a_{k - 1}$, we expand $a_k {i \choose k} + a_{k-1} {i \choose k - 1} + O(n^{k-1})$:
+    \begin{align*}
+        a_k {i \choose k} + a_{k-1} {i \choose k - 1} &= a_k \frac{i(i - 1) \dots (i - (k - 1))}{k!} + a_{k - 1} \frac{i(i - 1) \dots (i - (k - 2))}{(k - 1)!}\\
+                                                      &= a_k \frac{i^k - \frac{k (k-1)}{2} i^{k-1} + O(i^{k-2})}{k!} + a_{k-1} \frac{i^{k-1} + O(i^{k-2})}{(k - 1)!}\\
+                                                      &= \frac{a_k}{k!} i^k + \left( \frac{a_{k-1}}{(k-1)!} - \frac{k(k-1)}{2}\frac{a_k}{k!} \right) i^{k-1} + O(i^{k-2})
+    \end{align*}
+    Therefore, we have $a_k = k!$ and $a_{k-1} = (k-1)! \cdot \frac{k(k-1)}{2}$.
+    Substitute these back to $a_k {n + 1 \choose k + 1}$ and $a_{k-1} {n + 1 \choose k}$:
+    \begin{align*}
+        \sum_{i = 0}^n i^k &= \frac{a_k}{(k + 1)!} n^{k + 1} + \left( \frac{a_k}{(k + 1)!} \frac{- k^2 + k + 2}{2} + \frac{a_{k-1}}{k!}\right) n^k + O(n^{k-1})\\
+                           &= \frac{k!}{(k + 1)!} n^{k + 1} + \left( \frac{k!}{(k + 1)!} \frac{- k^2 + k + 2}{2} + \frac{(k-1)! \cdot \frac{k(k-1)}{2}}{k!}\right) n^k + O(n^{k-1})\\
+                           &= \frac{1}{k+1} n^{k + 1} + \left( \frac{-k^2 + k + 2}{2(k + 1)} + \frac{k(k-1)}{2k}\right) n^k + O(n^{k-1})\\
+                           &= \frac{1}{k+1} n^{k + 1} + \left( \frac{-k^2 + k + 2}{2(k + 1)} + \frac{k^2-1}{2(k + 1)}\right) n^k + O(n^{k-1})\\
+                           &= \frac{1}{k+1} n^{k + 1} + \frac 12 n^k + O(n^{k-1}).
+    \end{align*}
+    We have the desired result.
+
+\end{proof}
+\end{document}

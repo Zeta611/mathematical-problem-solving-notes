@@ -1,0 +1,352 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+
+\subsection{Mathematical Statement}
+\begin{itemize}
+    \item A \textsf{proposition} or \textsf{mathematical statement} is a sentence which is either true or false, but not both.
+        \begin{itemize}
+            \item ``Every even integer greater than 2 may be written as the sum of two prime numbers.''
+        \end{itemize}
+    \item A \textsf{predicate} is a statement which can not be determined true or false due to \textsf{free variables}.
+        \begin{itemize}
+            \item ``$n$ is a prime number.''
+        \end{itemize}
+    \item A \textsf{statement} is either a proposition or a predicate.
+        A single capital letter $P$, $Q$, etc. will be used to indicate a statement, or sometiems $P(m ,n)$ to indicate a predicate with free variables listed.
+        \begin{itemize}
+            \item ``$\pi$ is a special number'' is not a statement.
+        \end{itemize}
+\end{itemize}
+
+\subsection{Logical Connectives}
+\subsubsection{Or}
+``$P$ or $Q$'' is called the \textsf{disjunction} of the two statements $P$ and $Q$.
+It is denoted as $P \vee Q$.
+$P \vee Q$ corresponds to the following truth table:
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c}
+        $P$ & $Q$ & $P \vee Q$ \\ \hline
+        T   & T   & T          \\
+        T   & F   & T          \\
+        F   & T   & T          \\
+        F   & F   & F
+    \end{tabular}
+\end{table}
+
+\subsubsection{And}
+``$P$ and $Q$'' is called the conjunction of the two statements $P$ and $Q$.
+It is denoted as $P \wedge Q$.
+$P \wedge Q$ corresponds to the following truth table:
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c}
+        $P$ & $Q$ & $P \wedge Q$ \\ \hline
+        T   & T   & T          \\
+        T   & F   & F          \\
+        F   & T   & F          \\
+        F   & F   & F
+    \end{tabular}
+\end{table}
+
+\subsubsection{Not}
+``Not $P$'' is called the negation of the statement $P$.
+It is denoted as $\neg P$.
+$\neg P$ corresponds to the following truth table:
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c|c}
+        $P$ & $\neg P$ \\ \hline
+        T   & F        \\
+        F   & T
+    \end{tabular}
+\end{table}
+
+\subsection{Quantifiers and Logical Statements}
+\subsubsection{Quantifiers}
+\begin{defn} \label{def:quant}
+    In the statement ``For all $x$ in $S$, $P(x)$ is true,'' the variable $x$ is \textsf{universally quantified}.
+    It can be written:
+    \[
+        (\forall x \in S) P(x),
+    \]
+    where $\forall$ is a \textsf{universal quantifier}.
+    In ``There exists an $x$ in $S$ such that $P(x)$ is true,'' $x$ is \textsf{existentially quantified}.
+    It can be written:
+    \[
+        (\exists x \in S) P(x)
+    \]
+    where $\exists$ is an \textsf{existential quantifier}.
+    The set of allowed values for a variable is its \textsf{universe}.
+\end{defn}
+
+\subsubsection{Order of Quantifiers}
+Consider the sentence ``Ther is a real number $y$ such that $x = y^3$ for every real number.
+It seems to say that some number $y$ is the cube root of all numbers, which is obviously false.
+To say that every number has a cube root, we write ``For every real number $x$, there is a real number $y$ such that $x = y^3$.
+
+Compare the two:
+\[
+    (\forall x \in A)(\exists y \in B) P(x, y) \qquad (\exists y \in B)(\forall x \in A) P(x, y)
+\]
+Ther first is true if for each $x$ we can take $y$ that works.
+For the second statement to be true, there must be a single $y$ that will always work, no matter which $x$ is chosen.
+
+\subsubsection{Negation of Quantified Statements}
+\begin{align*}
+    \neg [(\forall x) P(x)] &\Leftrightarrow (\exists x)[\neg P(x)]\\
+    \neg [(\exists x) P(x)] &\Leftrightarrow (\forall x)[\neg P(x)]
+\end{align*}
+
+\begin{ex}
+    ``Every classroom has a chair that is not broken'' can be negated as following.
+    Let $R$ be a set of all classrooms, and let $C(r)$ be a set of all chairs in a classroom $r \in R$.
+    Suppose a statement $P(c)$ be true if a chair $c$ is broken and flse if it is not broken.
+    Then, the given statement can be written:
+    \[
+        (\forall r \in R)(\exists c \in C(r))(\neg P(c)).
+    \]
+    The negation of this is then:
+    \begin{align*}
+        &\neg [(\forall r \in R)(\exists c \in C(r))(\neg P(c))]\\
+        \Leftrightarrow & (\exists r \in R)(\forall c \in C(r)) P(c),
+    \end{align*}
+    which is ``There is a classroom in which all chairs in it are broken.''
+\end{ex}
+
+\subsection{Compound Statements}
+\begin{defn}
+    Let $P$ and $Q$ be statements.
+    The logical connective \textsf{conditional}, written by $P \Rightarrow Q$, means that $P$ implies $Q$.
+    \textsf{Biconditional}, written by $P \Leftrightarrow Q$, means that $P$ iff $Q$.
+    In the conditional statement $P \Rightarrow Q$, we call $P$ the \textsf{hypothesis} and $Q$ the \textsf{conclusion}.
+    The statement $Q \Rightarrow P$ is the \textsf{converse} of $P \Rightarrow Q$.
+\end{defn}
+
+The following is a truth table for $P \Rightarrow Q$.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c|c}
+        $P$ & $Q$ & $P \Rightarrow Q$ & $(\neg P) \vee Q$ \\ \hline
+        T   & T   & T                 & T                 \\
+        T   & F   & F                 & F                 \\
+        F   & T   & T                 & T                 \\
+        F   & F   & T                 & T
+    \end{tabular}
+\end{table}
+Note that $(P \Rightarrow Q) \Leftrightarrow [(\neg P) \vee Q]$.
+The following is a truth table for $P \Leftrightarrow Q$.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c}
+        $P$ & $Q$ & $P \Leftrightarrow Q$ \\ \hline
+        T   & T   & T                     \\
+        T   & F   & F                     \\
+        F   & T   & F                     \\
+        F   & F   & T
+    \end{tabular}
+\end{table}
+
+\subsubsection{Logical Connectives and Membership in Sets}
+Let $P(x)$ and $Q(x)$ be statements about an element $x$ from a universe $\mathcal U$.
+We often write a conditional statement $(\forall x \in \mathcal{U})(P(x) \Rightarrow Q(x))$ as $P(x) \Rightarrow Q(x)$, or simply $P \Rightarrow Q$ with an implicit universal quantifier.
+
+The hypothesis $P(x)$ can be interpreted as a universal quantifier in another way.
+With $A = \{ x \in \mathcal{U} \mid P(x) \text{ is true}\}$, the statement $P(x) \Rightarrow Q(x)$ can be written as $(\forall x \in A) Q(x)$.
+Another interpretation of $P(x) \Rightarrow Q(x)$ uses set inclusion.
+With $B = \{ x \in \mathcal{U} \mid Q(x) \text{is true}\}$, the conditional statement has the same meaning as the statement $A \subseteq B$.
+The converse statement $Q(x) \Rightarrow P(x)$ is $B \subseteq A$.
+Thus the biconditional $P \Leftrightarrow Q$ is equivalent to $A = B$.
+
+\subsection{Proofs}
+A proof of a mathematical statement is a logical argument which shows the truth of the statement.
+The logical argument consists of several steps provided by implications.
+In this chapter, a variety of methods of proof will be described.
+
+\subsubsection{Direct Proofs}
+Most of theorems are of the form $P \Rightarrow Q$.
+Since the statement is necessarily true if $P$ is false, we only need to consider the case when $P$ is true.
+Thus to prove $P \Rightarrow Q$, it is sufficient ot assume that $P$ is true and deduce $Q$ is true by logical arguments. This is the \textsf{direct proof}.
+
+\begin{ex}
+    Show that for positive real numbers $a$ and $b$, $a < b \Rightarrow a^2 < b^2$.
+\end{ex}
+\begin{proof}
+    \begin{align*}
+        a < b &\Rightarrow a \times a < b \times a \wedge a \times b < b \times b\\
+              &\Rightarrow a^2 < ba \wedge ab < b^2\\
+              &\Rightarrow a^2 < ab \wedge ab < b^2\\
+              &\Rightarrow a^2 < b^2
+    \end{align*}
+\end{proof}
+
+\begin{ex}[Proof by Cases]
+    Prove that $a^2 > 0$ for non-zero real number $a$.
+\end{ex}
+\begin{proof}
+    For the case $a > 0$, $a \times a > 0 \times a = 0$.
+    Hence, $a^2 > 0$ for positive $a$.
+
+    For the case $a <0$, $a \times a > 0\times a = 0$, since $a$ is negative.
+    Therfore, $a^2 > 0$ for any non-zero real number.
+\end{proof}
+
+\begin{ex}[Constructing Proofs Backwards]
+    Prove that $a < b \Rightarrow 4ab < (a + b)^2$ for real numbers $a$ and $b$.
+\end{ex}
+\begin{proof}
+    \begin{align*}
+        4ab < (a + b)^2 &\Leftarrow 4ab < a^2 + 2ab + b^2\\
+                        &\Leftarrow 0 < a^2 - 2ab + b^2\\
+                        &\Leftarrow 0 < (a - b)^2\\
+                        &\Leftarrow a - b \neq 0\\
+                        &\Leftarrow a - b <0 \vee a - b >0\\
+                        &\Leftarrow a < b \vee a > b\\
+                        &\Leftarrow a < b
+    \end{align*}
+\end{proof}
+
+\subsubsection{Contrapositive}
+The direct method can be inconvenient and does not always work.
+In this section we will consider a logically equivalent but very commonand useful method of proof.
+The \textsf{contrapositive} of $P \Rightarrow Q$ is $\neg Q \Rightarrow \neg P$. The equivalence between a conditional and its contrapositive allows us to prove $P \Rightarrow Q$ by proving $\neg Q \Rightarrow \neg P$. This is the \textsf{contrapositive method}.
+
+\begin{ex}
+    Let $f(x) = mx + b$.
+    Show that if $x \neq y$, then $f(x) \neq f(y)$.
+\end{ex}
+\begin{proof}
+    The contrapositive of the given statement is:
+    \[
+        f(x) = f(y) \Rightarrow x = y,
+    \]
+    where $f(x) = mx + b$.
+
+    When $f(x) = f(y)$, we obtain $mx + b = my +b$. If $b \neq 0$, then $x = y$.
+    For the case when $b = 0$, the statement is false.
+    Therefore, the statement requires a condition $b \neq 0$ to be true.
+\end{proof}
+
+A universally quantified statement like $(\forall x \in \mathcal{U})[P(x) \Rightarrow Q(x)]$ can be disproved by finding an element $x$ in $\mathcal{U}$ such that $P(x)$ is true but $Q(x)$ is false. Such an element is a \textsf{counterexample}.
+
+\begin{ex}
+    Prove that if $a$ is less than or equal to every real number greater than $b$, then $a \leq b$.
+\end{ex}
+\begin{proof}
+    The given statement can be written:
+    \[
+        (\forall r > b: a \leq r) \Rightarrow a \leq b,
+    \]
+    and its contrapositive is:
+    \[
+        a > b \Rightarrow (\exists r > b: a > r).
+    \]
+    To show this, it is sufficient to find such $r$.
+
+    Let $r = \frac{a+b}{2}$.
+    Then,
+    \begin{align*}
+        a > b &\Rightarrow a + a > a + b\\
+              &\Rightarrow 2a > a + b\\
+              &\Rightarrow \frac{2a}{2} > \frac{a+b}{2}\\
+              &\Rightarrow a > \frac{a+b}{2}\\
+              &\Rightarrow a > r.
+    \end{align*}
+    Since the contrapositive of the given statement is true, the original statement is also true.
+\end{proof}
+
+\subsubsection{Indirect Proof}
+Negating both sides $(P \Rightarrow Q) \Leftrightarrow \neg [P \wedge (\neg Q)]$.
+Hence we can prove $P \Rightarrow Q$ by proving $P$ and $\neg Q$ cannot both be true.
+We do this by obtaining a contradiction after assuming both $P$ and $\neg Q$.
+This is the \textsf{method of contradiction} or \textsf{indirect proof}.
+
+\begin{ex}
+    Show that among the numbers $y_1, \dots, y_n$, some number is as large as the average.
+\end{ex}
+\begin{proof}
+    Suppose, for the sake of contradiction, that there is no number as large as the average, given $n$ numbers $y_1, \dots, y_n$.
+    That is,
+    \begin{align*}
+        & \neg \left[(\exists y \in \{y_1, \dots, y_n\})\ y \geq \frac{y_1 + \dots + y_n}{n} \right]\\
+        \Leftrightarrow & (\forall y \in \{y_1, \dots, y_n\})\ y < \frac{y_1 + \dots + y_n}{n}.
+    \end{align*}
+    The sum of all numbers of $\{y_1, \dots, y_n\}$ be $S$.
+    Then,
+    \begin{align*}
+        S &= \sum_{i=1}^{n} y_i\\
+          &< \sum_{i=1}^{n} \frac{y_1 + \dots + y_n}{n}\\
+          &= n \cdot \frac{y_1 + \dots + y_n}{n}\\
+          &= y_1 + \dots + y_n\\
+          &= S\ \lightning
+    \end{align*}
+    Hence the assumption that no number is as large as the average must be false.
+    Thus some number is as large as the average.
+\end{proof}
+
+\begin{ex}
+    Show that there is no largest real number.
+\end{ex}
+\begin{proof}
+    For the sake of contradiction, suppose there is the largest real number $\alpha$.
+    Since the set of real numbers $\mathbb{R}$ is closed under addition, $\alpha + 1 \in \mathbb{R}$.
+    However, $\alpha + 1 > \alpha$, which is greater than $\alpha$. $\lightning$\\
+    Hence the assumption that there exists the largest real number is not true.
+    Therefore, there is no largest real number.
+\end{proof}
+
+\subsection{Exercises for Chapter 1 to 2}
+\begin{ex}
+    Prove that, if $a \leq b$, then $[a, b] \subseteq (c, d)$ iff $c < a$ and $b < d$.
+\end{ex}
+\begin{proof}
+    First, prove that $c < a \wedge b < d \Rightarrow [a, b] \subseteq (c, d)$ when $a \leq b$.
+    Choose $x$ such that $a \leq x \leq b$, i.e., $x \in [a, b]$.
+    \begin{align*}
+        a \leq x \leq b \wedge c < a \wedge b < d &\Rightarrow c < a \leq x \leq b < d\\
+                                                  &\Rightarrow c < x < d\\
+                                                  &\Rightarrow x \in (c , d)
+    \end{align*}
+
+    Now we prove that $[a, b] \subseteq (c, d) \Rightarrow c < a \wedge b < d$.
+    To do so, we suppose $c \geq a \vee b \geq d$ for the sake of contradiction.
+
+    We consider the case $c \geq a$.
+    Since $c \geq a \wedge c < d$, the following relationship holds:
+    \[
+        a \leq c < d.
+    \]
+    Choose any $x$ such that $a \leq x \leq \min \{ b, c\}$, which implies $x \in [a, b]$.
+    By Definition~\ref{def:sub}, $x \in (c, d)$, which implies $c < x < d$.
+    However, $x$ is chosen so that $x \leq c$.
+    The case when $b \geq d$ can be shown to be contradictive in a similar manner. $\lightning$
+    Thus, our assumption that $c \geq a \vee b \geq d$ is false.
+
+    Therefore, $[a, b] \subseteq (c, d) \Leftrightarrow c < a \wedge b < d$.
+\end{proof}
+
+\begin{ex}
+    Prove that, if $A \cap B \subseteq C$ and $x \in B$, then $x \notin A - C$.
+\end{ex}
+\begin{proof}
+    What we want to prove is the following statement:
+    \[
+        A \cap B \subseteq C \wedge x \in B \Rightarrow x \notin A - C.
+    \]
+
+    Since $A \cap B \subseteq C$, $x \in A \cap B \Rightarrow  x \in C$.
+    \begin{align*}
+        x \in B &\Rightarrow x \in B \wedge x \in \mathcal{U}\\
+                &\Rightarrow x \in B \wedge x \in A \cup A^\mathsf{c}\\
+                &\Rightarrow x \in B \wedge (x \in A \vee x \in A^\mathsf{c})\\
+                &\Rightarrow (x \in B \wedge x \in A) \vee (x \in B \wedge x \in A^\mathsf{c})\\
+                &\Rightarrow x \in B \cap A \vee x \in B \cap A^\mathsf{c}\\
+                &\Rightarrow x \in C \vee x \in A^\mathsf{c}\\
+                &\Rightarrow x \in C \cup A^\mathsf{c}\\
+                &\Rightarrow x \notin (C \cup A^\mathsf{c})^\mathsf{c}\\
+                &\Rightarrow x \notin C^\mathsf{c} \cap A\\
+                &\Rightarrow x \notin A - C
+    \end{align*}
+\end{proof}
+\end{document}

@@ -1,0 +1,310 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+
+\subsection{Sets}
+\begin{itemize}
+    \item A \textsf{set} is a collection of distinct objects with a precise description that provides a way of deciding whether given objects are in it.
+    \item $x = y$: $x$ and $y$ are equal.
+    \item $x \neq y$: $x$ and $y$ are not equal.
+\end{itemize}
+
+\begin{defn} \label{def:set}
+    The objects in a set are its \textsf{elements} or \textsf{members}.
+    When $x$ is an element of $A$, we write $x \in A$ and say $x$ belongs to $A$.
+    When $x$ is not in $A$, we write $x \notin A$.
+\end{defn}
+
+We use the symbols $\mathbb N$, $\mathbb Z$, $\mathbb Q$, $\mathbb R$, and $\mathbb C$ to denote the following sets of numbers:
+\begin{itemize}
+    \item $\mathbb{N} = \{ 0, 1, 2, 3, \cdots \}$ is the set of natural numbers.
+    \item $\mathbb{Z} = \{ \cdots, -2, -1, 0, 1, 2, \cdots \}$ is the set of integers.
+    \item $\mathbb{Q} = \left\{ \frac a b \middle | a, b \in \mathbb{Z} \text{ and } b \neq 0\right\}$ is the set of rational numbers.
+    \item $\mathbb R$ is the set of real numbers.
+    \item $\mathbb{C} = \left\{ a + ib \middle | a, b \in \mathbb{R} \text{ and } i = \sqrt{-1}\right\}$
+\end{itemize}
+
+\begin{defn} \label{def:eq}
+    Sets $A$ and $B$ are \textsf{equal}, written $A = B$, if they have the same elements.
+    The \textsf{empty set}, written $\varnothing$, is the unique set with no elements.
+\end{defn}
+
+\subsection{Subsets}
+\begin{defn} \label{def:sub}
+    Let $A$ and $B$ be sets.
+    We say that $A$ is a \textsf{subset} of $B$, written $A \subseteq B$, if all elements of $A$ are also elements of $B$.
+    $B$ is a \textsf{proper subset} of a set $A$, written $A \subset B$, if $B$ is a subset of $A$ that is not $A$ itself.
+\end{defn}
+
+\begin{prop} \label{prop:sub}
+    Let $A$, $B$, and $C$ be sets.
+    Then the following properties hold:
+    \begin{enumerate}
+        \item $A \subseteq A$
+        \item $A \subseteq B \wedge B \subseteq A \Rightarrow A = B$
+            % \item If $A \subseteq B$ and $B \subseteq A$, then $A = B$.
+        \item $A \subseteq B \wedge B \subseteq C \Rightarrow A \subseteq C$
+            % \item If $A \subseteq B$ and $B \subseteq C$, then $A \subseteq C$.
+    \end{enumerate}
+\end{prop}
+\begin{proof}
+    % \text{}\\
+    1. $A \subseteq A$
+    \begin{align*}
+        A = A &\Rightarrow (x \in A \Leftrightarrow x \in A) &\text{by Definition~\ref{def:eq}}\\
+              &\Rightarrow (x \in A \Rightarrow x \in A)\\
+              &\Rightarrow (A \subseteq A) & \text{by Definition~\ref{def:sub}}
+    \end{align*}
+
+    2. $A \subseteq B \wedge B \subseteq A \Rightarrow A = B$
+    \begin{align*}
+        (A \subseteq B \wedge B \subseteq A) &\Rightarrow [(x \in A \Rightarrow x \in B) \wedge (x \in B \Rightarrow x \in A)] &\text{by Definition~\ref{def:sub}}\\
+                                             &\Rightarrow (x \in A \Leftrightarrow x \in B)\\
+                                             &\Rightarrow A = B &\text{by Definition~\ref{def:eq}}
+    \end{align*}
+
+    3. $A \subseteq B \wedge B \subseteq C \Rightarrow A \subseteq C$
+    \begin{align*}
+        (A \subseteq B \wedge B \subseteq C) &\Rightarrow [(x \in A \Rightarrow x \in B) \wedge (x \in B \Rightarrow x \in C)] &\text{by Definition~\ref{def:sub}}\\
+                                             &\Rightarrow (x \in A \Rightarrow x \in C)\\
+                                             &\Rightarrow A \subseteq C &\text{by Definition~\ref{def:sub}}
+    \end{align*}
+\end{proof}
+
+\begin{defn} \label{def:pow}
+    The \textsf{power set} of a set $A$, denoted by $\mathcal{P} (A)$, is a set of all subsets of $A$.
+\end{defn}
+
+\begin{ex}
+    Let $x \neq y$ and $A = \{ x, y\}$.
+    Then,
+    \[
+        \mathcal{P} (A) = \{ \varnothing, \{x\}, \{y\}, \{x, y\}\}
+    \]
+\end{ex}
+
+\subsection{Set Operators}
+\begin{defn} \label{def:ops}
+    Let $A$ and $B$ be sets.
+    Their \textsf{union}, written $A \cup B$, consists of all elements in $A$ or $B$.
+    Their \textsf{intersection}, written $A \cap B$, consists of all elements in both $A$ and $B$.
+    Their \textsf{difference}, written $A - B$, consists of all elements of $A$ that are not in $B$.
+    Two sets are \textsf{disjoint} if their intersection is an empty set $\varnothing$.
+    If a set $A$ is contained in some universe $\mathcal U$ under discussion, then the complement $A^\mathsf{c}$ of $A$ is the set of elements of $\mathcal U$ not in $A$.
+\end{defn}
+
+\begin{prop} \label{prop:union}
+    Let $A$ and $B$ be sets.
+    Then,
+    \[
+        A \subseteq B \Leftrightarrow A \cup B = B
+    \]
+\end{prop}
+\begin{proof}
+    1. $A \subseteq B \Rightarrow A \cup B = B$
+    \begin{align*}
+        A \subseteq B &\Rightarrow (x \in A \Rightarrow x \in B) &\text{by Definition~\ref{def:sub}}\\
+                      &\Rightarrow (x \in A \vee x \in B \Rightarrow x \in B)\\
+                      &\Rightarrow (x \in A \cup B \Rightarrow x \in B) &\text{by Definition~\ref{def:ops}}\\
+                      &\Rightarrow [(x \in A \cup B \Rightarrow x \in B) \wedge B \subseteq A \cup B] &\text{by Definition~\ref{def:ops}}\\
+                      &\Rightarrow (A \cup B \subseteq B \wedge B \subseteq A \cup B) &\text{by Definition~\ref{def:sub}}\\
+                      &\Rightarrow A \cup B = B &\text{by Proposition~\ref{prop:sub}}
+    \end{align*}
+    2. $A \subseteq B \Leftarrow A \cup B = B$
+    \begin{align*}
+        A \cup B = B &\Rightarrow A \cup B \subseteq B &\text{by Proposition~\ref{prop:sub}}\\
+                     &\Rightarrow (A \cup B \subseteq B \wedge A \subseteq A \cup B) &\text{by Definition~\ref{def:ops}}\\
+                     &\Rightarrow A \subseteq B &\text{by Proposition~\ref{prop:sub}}
+    \end{align*}
+\end{proof}
+
+\begin{prop} \label{prop:union_more}
+    Let $A$, $B$, and $C$ be sets.
+    Then
+    \begin{enumerate}
+        \item $A \cup A = A$
+        \item $A \cup B = B \cup A$
+        \item $(A \cup B) \cup C = A \cup (B \cup C)$
+    \end{enumerate}
+\end{prop}
+\begin{proof}
+    1. $A \cup A = A$
+    \begin{align*}
+        x \in A \cup A &\Leftrightarrow x \in A \vee x \in A &\text{by Definition~\ref{def:ops}}\\
+                       &\Leftrightarrow x \in A
+    \end{align*}
+    Therefore, $A \cup A = A$.\\
+    2. $A \cup B = B \cup A$
+    \begin{align*}
+        x \in A \cup B &\Leftrightarrow (x \in A \vee x \in B) &\text{by Definition~\ref{def:ops}}\\
+                       &\Leftrightarrow (x \in B \vee x \in A)\\
+                       &\Leftrightarrow x \in B \cup A &\text{by Definition~\ref{def:ops}}
+    \end{align*}
+    Therefore, $A \cup B = B \cup A$.\\
+    3. $(A \cup B) \cup C = A \cup (B \cup C)$
+    \begin{align*}
+        x \in (A \cup B) \cup C &\Leftrightarrow x \in A \cup B \vee x \in C &\text{by Definition~\ref{def:ops}}\\
+                                &\Leftrightarrow (x \in A \vee x \in B) \vee x \in C &\text{by Definition~\ref{def:ops}}\\
+                                &\Leftrightarrow x \in A \vee (x \in B \vee x \in C)\\
+                                &\Leftrightarrow x \in A \vee x \in B \cup C\\
+                                &\Leftrightarrow x \in A \cup (B \cup C)
+    \end{align*}
+\end{proof}
+
+\begin{ex} \label{ex:int_sub}
+    Let $A$ and $B$ be sets.
+    Show that
+    \[
+        A \subseteq B \Leftrightarrow A \cap B = A.
+    \]
+\end{ex}
+\begin{proof}
+    In the same way as in Proposition~\ref{prop:union}.
+\end{proof}
+
+\begin{ex} \label{ex:int_ass}
+    Let $A$, $B$, and $C$ be sets.
+    Then prove the following properties.
+    \begin{enumerate}
+        \item $A \cap A = A$
+        \item $A \cap B = B \cap A$
+        \item $(A \cap B) \cap C = A \cap (B \cap C)$
+    \end{enumerate}
+\end{ex}
+\begin{proof}
+    In the same way as in Proposition~\ref{prop:union_more}.
+\end{proof}
+
+\begin{prop}
+    Let $A$, $B$, $C$ be sets. Then
+    \begin{enumerate}
+        \item $A \cup (A \cap B) = A$
+        \item $A \cap (A \cup B) = A$
+        \item $A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$
+        \item$A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$
+    \end{enumerate}
+\end{prop}
+\begin{proof}
+    1. $A \cup (A \cap B) = A$
+    \begin{align*}
+        x \in A \cap B &\Rightarrow (x \in A \wedge x \in B) &\text{by Definition~\ref{def:ops}}\\
+                       &\Rightarrow x \in A
+    \end{align*}
+    Thus, $A \cap B \subseteq A$.
+    Therefore, by Proposition~\ref{prop:union}, $A \cup (A \cap B) = A$.
+
+    2. $A \cap (A \cup B) = A$
+    \begin{align*}
+        x \in A &\Rightarrow (x \in A \vee x \in B) \\
+                &\Rightarrow x \in A \cup B &\text{by Definition~\ref{def:ops}}\
+    \end{align*}
+    Thus, $A \subseteq A \cup B$.
+    Therefore, by Example~\ref{ex:int_sub}, $A \cap (A \cup B) = A$.
+
+    3. $A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$
+    \begin{align*}
+        x \in A \cup (B \cap C) &\Leftrightarrow (x \in A \vee x \in B \cap C) &\text{by Definition~\ref{def:ops}}\\
+                                &\Leftrightarrow [x \in A \vee (x \in B \wedge x \in C)]\\
+                                &\Leftrightarrow [(x \in A \vee x \in B) \wedge (x \in A \vee x \in C)]\\
+                                &\Leftrightarrow (x \in A \cup B \wedge x \in A \cup C) &\text{by Definition~\ref{def:ops}}\\
+                                &\Leftrightarrow x \in (A\cup B) \cap (A \cup C) &\text{by Definition~\ref{def:ops}}
+    \end{align*}
+    Therefore, $A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$.
+
+    4. $A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$
+    \begin{align*}
+        x \in A \cap (B \cup C) &\Leftrightarrow (x \in A \wedge x \in B \cup C) &\text{by Definition~\ref{def:ops}}\\
+                                &\Leftrightarrow [x \in A \wedge (x \in B \vee x \in C)] &\text{by Definition~\ref{def:ops}}\\
+                                &\Leftrightarrow [(x \in A \wedge x \in B) \vee (x \in A \vee x \in C)]\\
+                                &\Leftrightarrow (x \in A \cup B) \vee (x \in A \cup C) &\text{by Definition~\ref{def:ops}}\\
+                                &\Leftrightarrow x \in (A \cap B) \cup (A \cap C) &\text{by Definition~\ref{def:ops}}
+    \end{align*}
+    Therefore, $A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$.
+\end{proof}
+
+\begin{ex}
+    Let $A$ and $B$ be sets.
+    Show that
+    \[
+        A \subseteq B \Leftrightarrow A - B = \varnothing.
+    \]
+\end{ex}
+\begin{proof}
+    We first show that $A \subseteq B \Rightarrow A - B = \varnothing$.
+    \begin{align*}
+        A \subseteq B &\Rightarrow (x \in A \Rightarrow x \in B) &\text{by Definition~\ref{def:sub}}\\
+                      &\Rightarrow [(x \in A \wedge x \notin B) \Rightarrow (x \in B \wedge x \notin B)]\\
+                      &\Rightarrow [(x \in A \wedge x \notin B) \Rightarrow x \in \varnothing]\\
+                      &\Rightarrow (x \in A - B \Rightarrow x \in \varnothing) &\text{by Definition~\ref{def:ops}}\\
+                      &\Rightarrow A - B \subseteq \varnothing &\text{by Definition~\ref{def:sub}} \\
+                      &\Rightarrow A - B \subseteq \varnothing \wedge \varnothing \subseteq A - B\\
+                      &\Rightarrow A - B = \varnothing &\text{by Proposition~\ref{prop:sub}}
+    \end{align*}
+    We now show that $A - B = \varnothing \Rightarrow A \subseteq B$.
+    \begin{align*}
+        A - B = \varnothing &\Rightarrow A - B \subseteq \varnothing &\text{by Proposition~\ref{prop:sub}}\\
+                            &\Rightarrow (x \in A - B \Rightarrow x \in \varnothing)\\
+                            &\Rightarrow [(x \in A \wedge x \notin B) \Rightarrow x \in \varnothing] &\text{by Definition~\ref{def:ops}}\\
+                            &\Rightarrow [(x \in A \wedge x \notin B) \vee x \in B \Rightarrow x \in \varnothing \vee x \in B]\\
+                            &\Rightarrow [(x \in A \vee x \in B) \wedge (x \notin B \vee x \in B) \Rightarrow x \in \varnothing \cup B \wedge \varnothing \subseteq B] &\text{by Definition~\ref{def:ops}}\\
+                            &\Rightarrow (x \in A \cup B \wedge x \in \mathcal{U} \Rightarrow x \in B) &\text{by Def.~\ref{def:ops} and Prop.~\ref{prop:union}}\\
+                            &\Rightarrow (x \in A \cup B \Rightarrow x \in B)\\
+                            &\Rightarrow A \cup B \subseteq B &\text{by Definition~\ref{def:sub}}\\
+                            &\Rightarrow A \cup B \subseteq B \wedge B \subseteq A \cup B &\text{by Definition~\ref{def:ops}}\\
+                            &\Rightarrow A \cup B = B &\text{by Proposition~\ref{prop:union}}
+    \end{align*}
+\end{proof}
+
+\begin{ex}
+    Let $A$, $B$,and $C$ be sets.
+    Prove the following properties:
+    \begin{enumerate}
+        \item $A - (B \cup C) = (A - B) \cap (A - C)$
+        \item $A - (B \cap C) = (A - B) \cup (A - C)$
+    \end{enumerate}
+\end{ex}
+\begin{proof}
+    Let's first prove that $A - B = A \cap B^\mathsf{c}$.
+    \begin{align*}
+        x \in A - B &\Leftrightarrow x \in A \wedge x \notin B &\text{by Definition~\ref{def:ops}}\\
+                    &\Leftrightarrow x \in A \wedge x \in B^\mathsf{c} &\text{by Definition~\ref{def:ops}}\\
+                    &\Leftrightarrow x \in A \cap B^\mathsf{c}
+    \end{align*}
+    Thus, $A - B = A \cap B^\mathsf{c}$. Now we prove the following:
+    \begin{align*}
+        (A \cup B)^\mathsf{c} &= A^\mathsf{c} \cap B^\mathsf{c}\\
+        (A \cap B)^\mathsf{c} &= A^\mathsf{c} \cup B^\mathsf{c}.
+    \end{align*}
+    First show that $(A \cup B)^\mathsf{c} = A^\mathsf{c} \cap B^\mathsf{c}$.
+    \begin{align*}
+        x \in (A \cup B)^\mathsf{c} &\Leftrightarrow \neg (x \in A \cup B) &\text{by Definition~\ref{def:ops}}\\
+                                    &\Leftrightarrow \neg (x \in A \vee x \
+    \in B) &\text{by Definition~\ref{def:ops}}\\
+           &\Leftrightarrow (\neg x \in A) \wedge (\neg x \in B)\\
+           &\Leftrightarrow x \in A^\mathsf{c} \wedge x \in B^\mathsf{c} &\text{by Definition~\ref{def:ops}}\\
+           &\Leftrightarrow x \in A^\mathsf{c} \cap B^\mathsf{c} &\text{by Definition~\ref{def:ops}}
+    \end{align*}
+    Showing $(A \cap B)^\mathsf{c} = A^\mathsf{c} \cup B^\mathsf{c}$ is analogous.
+
+    1. $A - (B \cup C) = (A - B) \cap (A - C)$
+    \begin{align*}
+        A - (B \cup C) &= A \cap (B \cup C)^\mathsf{c}\\
+                       &= A \cap (B^\mathsf{c} \cap C^\mathsf{c}) &\text{by Definition~\ref{def:ops}}\\
+                       &= (A \cap B^\mathsf{c}) \cap (A \cap C^\mathsf{c}) &\text{by Example~\ref{ex:int_ass}}\\
+                       &= (A - B) \cap (A - C)
+    \end{align*}
+
+    2. $A - (B \cap C) = (A - B) \cup (A - C)$
+
+    It is analogous to the above.
+\end{proof}
+
+\begin{defn}
+    A \textsf{list} with entries in $A$ consists of elements of $A$ in a specified order, with repetition allowed.
+    A $k$-tuple is a list with $k$ entries.
+    We write $A^k$ for the set of $k$-tuples with entries in $A$.
+    An \textsf{ordered pair} is a list with two entries.
+    The \textsf{Cartesian product} of sets $S$ and $T$, written $S \times T$, is the set $\{ (x,y) | x \in S, y \in T\}$.
+    Two ordered pairs $(a, b)$ and $(c, d)$ are \textsf{equal}, written $(a, b) = (c, d)$, if $a = c$ and $b = d$.
+\end{defn}
+\end{document}

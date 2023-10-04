@@ -1,0 +1,860 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+\subsection{Representation of Natural Numbers}
+\begin{defn}
+    Let $q$ be a natural number greater than 1.
+    A \textsf{$q$-ary} or \textsf{base $q$ representation} of $n$ is a list $a_m, \dots, a_0$ of integers, each in $\{0, 1, \dots, q-1\}$, such that $a_m > 0$ and $n = \sum_{i = 0}^m a_i q^i$.
+    For clarity, we may use a subscript $q$ to indicate that the base is $q$.
+    We call representation in base 2, 3, and 10 as \textsf{binary}, \textsf{ternary}, and \textsf{decimal}, respectively.
+
+    Theorem~\ref{thm:uniquerep} allows us to use the term \textbf{the} base $q$ representation, instead of \textbf{a} base $q$ representation.
+\end{defn}
+
+\begin{ex}
+    The ternary representation for the first ten natural numbers in order are 1, 2, 10, 11, 12, 20, 21, 22, 100, 101.
+    The corresponding representation in base 4 are 1, 2, 3, 10, 11, 12, 13, 20, 21, 22.
+\end{ex}
+
+\begin{thm}\label{thm:uniquerep}
+    Let $q$ be a natural number greater than 1.
+    Every natural number has a unique base $q$ representation with no leading zeros.
+\end{thm}
+\begin{proof}
+    We use induction on $n$.
+    For the case $n = 1$, $1 = 1 \cdot q^0$ is a base $q$ representation of $1$.
+
+    Suppose now as an induction hypothesis that $n$ has a base $q$ representation $n = \sum_{i = 0}^m a_i q^i$.
+    We consider two cases:\\
+    \noindent \textbf{Case 1}: $a_0 = \dots = a_m = q - 1$\\
+    \begin{align*}
+        n &= \sum_{i = 0}^m a_i q^i\\
+          &= \sum_{i = 0}^m (q - 1) q^i\\
+          &= (q - 1) \sum_{i = 0}^m q^i\\
+          &= (q - 1) \frac{q^{m+1} - 1}{q - 1}\\
+          &= q^{m + 1} - 1
+    \end{align*}
+    Thus, $n + 1 = 1 \cdot q^{m + 1}$.
+
+    \noindent \textbf{Case 2}: Otherwise\\
+    \indent Let $t$ be the smallest index such that $a_t < q - 1$, i.e.,
+    \[
+        a_0 = \dots = a_{i - 1} = q - 1, a_t < q - 1, \dots
+    \]
+    Define $b_j$ as following:
+    \[
+        b_j = \begin{cases}
+            a_j &\text{if } j > t\\
+            a_t + 1 &\text{if } j = t\\
+            0 &\text{if } j < t
+        \end{cases}
+    \]
+    Then,
+    \begin{align*}
+        \sum_{i = 0}^m b_i q^i &= 0 + \dots + 0 + (a_t + 1) q^t + a_{t + 1} q^{t + 1} + \dots + a_m q^m\\
+                               &= q^t + a_t q^t + a_{t+1} q^{t+1} + \dots + a_m q^m\\
+                               &= q^t - 1 + 1 + a_t q^t + a_{t+1} q^{t+1} + \dots + a_m q^m\\
+                               &= (q - 1) \sum_{i = 0}^{t - 1} q^i + 1 + a_t q^t + a_{t+1} q^{t+1} + \dots + a_m q^m\\
+                               &= \sum_{i = 0}^{t - 1} (q - 1) q^i + 1 + a_t q^t + a_{t+1} q^{t+1} + \dots + a_m q^m\\
+                               &= \sum_{i = 0}^{t - 1} a_i q^i + 1 + a_t q^t + a_{t+1} q^{t+1} + \dots + a_m q^m\\
+                               &= \sum_{i = 0}^{m} a_i q^i + 1\\
+                               &= n + 1
+    \end{align*}
+    Hence, from the induction principle, there is a $q$-ary representation for all $n \in \mathbb N$.
+
+    Now we show the uniqueness of the base $q$ represenation.
+    For the sake of contradiction, suppose there are two distinct $q$-ary representation of $n$.
+    Let the two be $\sum_{i = 0}^s a_i q^i$ and $\sum_{i = 0}^t b_i q^i$.
+    If $s \neq t$, let $s > t$ without loss of generality.
+    Since $s, t \in \mathbb N$, $s \geq t+1$ can be implied.
+    Then,
+    \begin{align*}
+        n &= \sum_{i=0}^s a_i q^i > q^s\\
+        n &= \sum_{i=0}^t b_i q^i < q^{t+1} \leq q^s \
+    \end{align*}
+    We deduced $n > q^s \wedge n \leq q^s$. $\lightning$
+
+    Therefore, $s = t$.
+    Let $S = \{n | n \text{ has more than one distinct base $q$ representations.}\}$.
+    Since $n$ has two distinct base $q$ representation, $n - q^s$ also has two distinct representations.
+    Thus, for any element $e$ in $S$, where $q^m \leq e < q^{m+1}$, $e - q^m$ is also an element of $S$.
+    As $S \subset \mathbb N$, this contradicts the well-ordering principle.
+\end{proof}
+
+From the following, we define $[n] = \{m | m \in \mathbb{N} \wedge m \leq n\} = \{1, 2, \dots, n\}$.
+
+\begin{prob} [The Weights Problem]
+    A balance scale has left and right pans; we can place objects in each pan and test whether the total weight is the same on each side.
+    Suppose that five objects of known integer weight can be selected.
+    How caan we choose the weights to guarantee being able to check all integer weights form 1 through 121?
+    Given an object believed to have weight $n \in [121]$, how should we place the known weights to chekc it?
+    Is it possible to choose five values to check more weights?
+\end{prob}
+\begin{sol}
+    Intuitively, we can think of putting weights on the same side as the object as a negative weight.
+    Thus, each weight can attribute 1, 0, -1, which corresponds to putting the weight on the other side of the pan, not putting the weight at all, and putting the weight on the same side, respectively.
+    Since there are three possible attributes, we can come up with a ternary representation of the weight.
+    We therefore choose $3^0=1, 3^1=3, 3^2=9, 3^3=27, 3^4=81$ as weights.
+
+    Now show that our choice can actually weigh any object with weight $w \in [121]$, i.e., $(\forall w \in [121])(\exists (a_0, a_1, a_2, a_3, a_4) \in \{-1, 0, 1\}^5)\ w = \sum_{i = 0}^4 a_i 3^i$.
+    From Theorem~\ref{thm:uniquerep}, there is a unique ternary representation of $u \in \{121, 122, \dots, 242\}$,
+    \[
+        u = \sum_{i = 0}^4 b_i 3^i
+    \]
+    where $b_i \in \{0, 1, 2\}$.
+    Substracting $3^0 + 3^1 + \dots + 3^4 = 121$ to each side results in
+    \[
+        u - 121 = \sum_{i = 0}^4 (b_i - 1) 3^i.
+    \]
+    Note that $b_i - 1 \in \{-1, 0, 1\}$ and $u - 121 \in [121]$.
+    Hence we can choose $a_i = b_i - 1$.
+    Therefore, there always is a representation of $w$ as $\sum_{i=0}^4 a_i 3^i$.
+\end{sol}
+
+\subsection{Bijections}
+\begin{defn}
+    A function $f: A \rightarrow B$ is a \textsf{bijection} if for every $b \in B$ there is exactly one $x \in A$ such that $f(x) = b$.
+    Such $f$ is called a \textsf{one-to-one correspondence} between $A$ and $B$.
+\end{defn}
+
+\begin{ex} \label{ex:NZbij}
+    There is a bijection between $\mathbb N$ and $\mathbb Z$.
+\end{ex}
+\begin{proof}
+    We give an explicit one-to-one correspondance from $\mathbb{N}$ to $\mathbb Z$.
+    Correspond all even numbers to non-negative integers and odd numbers to negative integers:
+    \[
+        f(n) = \begin{cases}
+        \frac n2 - 1 &\text{if $n$ is even.}\\
+    - \frac{n + 1}{2} &\text{if $n$ is odd.}
+\end{cases}
+    \]
+    We show that $f$ is a bijection.
+    Note that $\frac n2 - 1 \geq 0$ for all $n \in \mathbb N$, and $- \frac{n+1}{2} <0$ for all $n \in \mathbb N$.
+    Choose any integer $m \in \mathbb Z$.
+    If $m \leq 0$, the only possible $n$ that corresponds to it must have a relation $-\frac{n+1}{2} = m$, and such $n$ exists uniquely as $-2m - 1$.
+    If $m > 0$, the only possible $n$ that correponds to it must have a relation $\frac n2 - 1 = m$.
+    We can determine $n$ uniquely as $2m + 2$.
+    Therefore, $f$ is a bijection.
+\end{proof}
+
+\begin{ex}
+    Given constants $a, b, c, d \in \mathbb{R}$, let $f: \mathbb{R}^2 \rightarrow \mathbb{R}^2$ is defined by $f(x, y) = (ax + by, cx + dy)$.
+    When is $f$ a bijection?
+\end{ex}
+\begin{sol}
+    For each $(\alpha, \beta) \in \mathbb{R}^2$, there needs to be $(x, y) \in \mathbb{R}^2$ such that $\alpha = ax + by$ and $\beta = cx + dy$.
+    Using a matrix, we can rewrite the system as
+    \[
+        \begin{bmatrix}
+            \alpha\\
+            \beta
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+            a & b\\
+            c & d
+        \end{bmatrix}
+        \begin{bmatrix}
+            x\\
+            y
+        \end{bmatrix}.
+    \]
+    For $x$ and $y$ to exist uniquely, the inverse of
+    \[
+        \begin{bmatrix}
+            a & b\\
+            c & d
+        \end{bmatrix}
+    \]
+    should exist.
+    Therefore, the determinant being nonzero--$ad - bc \neq 0$--is both the necessary and sufficient condition for $f$ to be bijective.
+\end{sol}
+
+\begin{defn}
+    If $f$ is a bijection from $A$ to $B$, then the \textsf{inverse} of $f$ is a function $g: B \rightarrow A$ such that for each $b \in B$, $g(b)$ is a unique element $x \in A$ such that $f(x) = b$.
+    We write $f^{-1}$ for the function $g$.
+\end{defn}
+
+\begin{ex}
+    If $f$ is a bijection and $g$ is the inverse of $f$, then $g$ is also a bijection and $f$ is the inverse of $g$.
+    Thus $(f^{-1})^{-1} = f$.
+\end{ex}
+\begin{proof}
+    Let $f$ be a function from $X$ to $Y$.
+    Choose any $x_1 \in X$.
+    Then there is a unique $y_1 \in Y$ such that $f(x_1) = y_1$, from the definition of a function (which was never formally stated).
+    For such $y_1$, since $g$ is an inverse of $f$, i.e.,
+    \[
+        (\forall y \in Y)(\exists ! x \in X)\ g(y) = x,
+    \]
+    there is a unique $g(y_1) = x_2 \in X$ such that $f(x_2) = y_1 \in Y$.
+    Since $f$ is a bijection, i.e.,
+    \[
+        (\forall y \in Y)(\exists ! x \in X)\ f(x) = y,
+    \]
+    and as $f(x_1) = f(x_2) = y_1$, it follows that $x_1 = x_2$.
+
+    Therefore, $g$ is also a bijection as there is a unique $y \in Y$ for any $x \in X$.
+\end{proof}
+
+Showing that $f: A \rightarrow B$ is a bijection means showing that for each $b \in B$, the equation $f(x) = b$ has a unique solution in $A$.
+Solving the equation to write a formula hat determines $x$ in terms of $b$ obtains a formula for $f^{-1}$.
+We must check that the formula is valid on all of $B$.
+
+\begin{ex}
+    Define $f: \mathbb{R} \rightarrow \mathbb{R}$ by $f(x) = 5x - 2|x|$.
+    Show that $f$ is a bijection.
+\end{ex}
+\begin{proof}
+    Note that when $x \geq 0$, $f(x) = 3x \geq 0$, and when $x < 0$, $f(x) = 7x < 0$.
+    Thus, $f(x)$ follows the sign of $x$ and vice versa.
+    Choose any $y \geq 0$.
+    If there is any, possible $x$ such that $f(x) = y$ is also greater or equal to 0.
+    Hence we solve $3x = y$.
+    $x$ is uniquely determined as $\frac y3$.
+
+    Now choose any $y < 0$.
+    Only possible $x$ such that $f(x) = y$ is negative.
+    Thus solving $7x = y$, $x = \frac y7$.
+
+    $x$ is uniquely determined for any $y \in \mathbb R$.
+    Therefore, $f$ is a bijection.
+\end{proof}
+
+A bijection transforms elements of one set into elements of another, allowing us to work in either context.
+For example, we can encode a subset $S$ of $[n]$ by recording the presence or absence of an element $i$ as 1 or 0 in position $i$ of an $n$-tuple $m(S)$.
+An $n$-tuple with entries in $\{0, 1\}$ is a \textsf{binary $n$-tuple}; we call $m(s)$ the \textsf{binary encoding} of $S$.
+From a binary $n$-tuple $b$, we will uniquely retrieve $S$ such that $m(S) = b$.
+Thus binary encoding is a bijection from the power set of $[n]$ to the set of binary $n$-tuples.
+\begin{ex}
+    Consider the set $[3]$.
+    For $S = \varnothing$, $m(S) = (0,0,0)$, and for $S = \{1, 3\}$, $m(S) = (1, 0, 1)$.
+    Similarly, $S = \{1,2,3\}$ encodes to $m(S) = (1,1,1)$.
+\end{ex}
+
+\begin{prop}
+    Binary encoding establishes a bijection from the power set of $[n]$ to the set of binary $n$-tuples.
+\end{prop}
+\begin{proof}
+    We show that
+    \[
+        m: 2^{[n]} \rightarrow \mathbb{Z}_2^n
+    \]
+    is a bijection.
+
+    Choose any $(b_1, \dots, b_n) \in \mathbb{Z}_2^n$.
+    We can construct $S \subseteq [n]$ such that $i \in S$ iff $b_i = 1$.
+    Thus, for any $(b_1, \dots, b_n) \in \mathbb{Z}_2^n$, we can find $S \in 2^{[n]}$.
+
+    Now show that there is a unique subset of $[n]$ for a binary $n$-tuple.
+    Suppose there are two distinct subsets $S$ and $T$ of $[n]$ for a binary encoding $b$ for the sake of contradiction.
+    From a simple argument, we can show that
+    \[
+        \neg (p \Leftrightarrow q) \Leftrightarrow (p \wedge \neg q) \vee (q \wedge \neg p)
+    \]
+    Then, since $S \neq T$,
+    \[
+        (\exists i \in [n])\ (i \in S \wedge i \notin T) \vee (i \notin S \wedge i \in T).
+    \]
+    Without loss of generality, we only need to check the case $(\exists i \in [n])\ i \in S \wedge i \notin T$.
+    Thus, $[m(S)]_i = 1$ whereas $[m(T)]_i = 0$.
+    This contradicts the prior assumption that $b = m(S) = m(T)$. $\lightning$
+
+    Therefore, $m$ is a bijection.
+\end{proof}
+
+\subsection{Injections and Surjections}
+\begin{defn}
+    A function $f: A \rightarrow B$ is \textsf{injection} if for each $b \in B$, there is at most one $x \in A$ such that $f(x) = b$.
+    A function $f: A \rightarrow B$ is \textsf{surjective} if for each $b \in B$, there is at least one $x \in A$ such that $f(x) = b$.
+    The corresponding nouns are \textsf{injection} and \textsf{surjection}.
+\end{defn}
+
+\begin{prop} \label{prop:strictinject}
+    Let $f$ be a real-valued function defined on a subset of $\mathbb R$.
+    If $f$ is strictly monotone, then $f$ is injective.
+\end{prop}
+\begin{proof}
+    \[
+        x_1 > x_2 \Rightarrow f(x_1) > f(x_2),
+    \]
+    since $f$ is strictly monotone.
+    Then,
+    \begin{align*}
+        x_1 \neq x_2 &\Rightarrow x_1 > x_2 \wedge x_1 < x_2\\
+                     &\Rightarrow f(x_1) > f(x_2) \wedge f(x_1) < f(x_2)\\
+                     &\Rightarrow f(x_1) \neq f(x_2).
+    \end{align*}
+    Therefore, $f$ is injective.
+\end{proof}
+
+\begin{ex}
+    What are the solutions to the equation below?
+    \[
+        x^4 + x^3 y + x^2 y^2 + x y^3 + y^4 = 0
+    \]
+\end{ex}
+\begin{sol}
+    Multiply each side of the given equation with $x - y$ yields:
+    \[
+        x^5 - y^5 = 0
+    \]
+    Since $f(x) = x^5$ is strictly monotone, from Proposition~\ref{prop:strictinject}, $f$ is an injection.
+    Thus, if $x^5 = y^5$, $x = y$.
+    Hence, the only possible solution for $(x - y)(x^4 + x^3 y + x^2 y^2 + x y^3 + y^4) = 0$ is $x = y$.
+    Now substitute $x = y$ to the given equation:
+    \[
+        5x^4 = 0.
+    \]
+    Therefore, $x = y = 0$.
+\end{sol}
+
+\begin{prob}
+    Show that if $n \in \mathbb N$ is an odd number, then $f(x) = x^n$ is strictly increasing.
+\end{prob}
+\begin{proof}
+    Choose any odd number $n \in \mathbb N$.
+    Then $(\exists m \in \mathbb{N} \cup \{0\})\ n = 2m + 1$.
+    There are five cases:\\
+    \noindent \textbf{Case 1}: $0 < x_1 < x_2$\\
+    \indent If $0 < x_1 < x_2$, $0 < x_1^n < x_2^n$ follows since the two are in a positive set $(0, \infty) \subset \mathbb R$.
+
+    \noindent \textbf{Case 2}: $x_1 < 0 < x_2$\\
+    \indent $x_2^n$ is still positive since it is an element of a positive set.
+    Since $-x_1 > 0$, $(-x_1)^{2m} = x_1^{2m} > 0$.
+    Thus, $x_1^n = x_1^{2m} \cdot x_1 < 0$.
+    Therefore, $x_1^n < x_2^n$.
+
+    \noindent \textbf{Case 3}: $x_1 < x_2 < 0$\\
+    \indent $0 < -x_2 < -x_1$, so from \textbf{Case 1}, $0 < (-x_2)^n < (-x_1)^n$.
+    Since $(-x_1)^n = (-x_1)^{2m + 1} = (-x_1)^{2m} \cdot (-x_1) = -x_1^n$, and $(-x_2)^n$ is similarly $-x_2^n$, $0 < -x_2^n < -x_1^n$.
+    Therefore, $x_1^n < x_2^n < 0$.
+
+    Other two cases are when either $x_1$ or $x_2$ is 0, when $x_1 < x_2$.
+    The two cases can be shown similarly.
+
+    Therefore, $f(x) = x^n$ is strictly increasing.
+\end{proof}
+
+\subsection{Composition of Functions}
+\begin{defn}
+    If $f: A \rightarrow B$ and $g: B \rightarrow C$, then the \textsf{composition} of $g$ with $f$ is a function $h: A \rightarrow C$ defined by $h(x) = g\left(f(x)\right)$ for $x \in A$.
+    When $h$ is a composition of $g$ with $f$, we write $h = g \circ f$.
+\end{defn}
+
+\begin{prop}
+    \begin{enumerate}
+        \item The composition of two injections is an injection.
+        \item The composition of two surjections is a surjection.
+        \item If $f$ and $g$ are bijections, then $(g \circ f)^{-1} = f^{-1} \circ g^{-1}$.
+    \end{enumerate}
+\end{prop}
+\begin{proof}
+    Let $f: A \rightarrow B$ and $g: B \rightarrow C$ be injections.
+
+    1.
+    \begin{align*}
+        (g \circ f)(x_1) = (g \circ f)(x_2) &\Rightarrow g(f(x_1)) = g(f(x_2))\\
+                                            &\Rightarrow f(x_1) = f(x_2)\\
+                                            &\Rightarrow x_1 = x_2
+    \end{align*}
+    Thus, $g \circ f$ is also an injection.
+
+    2. For each $c \in C$, there is $b \in B$ such that $g(b) = c$.
+    Also, for each $b \in B$, there is $a \in A$ such that $f(a) = b$.
+    Thus, For each $c \in C$, there is $a \in A$ such that $(g \circ f)(a) = g(f(a)) = g(b) = c$.
+    Therefore, $g \circ f$ is also a surjection.
+
+    3.
+    \begin{align*}
+        \left(f^{-1} \circ g^{-1}\right) \circ (g \circ f)(x) &= \left(f^{-1} \circ g^{-1}\right) \left((g \circ f)(x)\right)\\
+                                                              &= \left(f^{-1} \circ g^{-1}\right) \left(g(f(x))\right)\\
+                                                              &= f^{-1} \left(g^{-1}(g(f(x)))\right)\\
+                                                              &= f^{-1} (f(x))\\
+                                                              &= x
+    \end{align*}
+    Therefore, $f^{-1} \circ g^{-1} = (g \circ f)^{-1}$.
+\end{proof}
+
+\begin{prop} [Associativity of Composition]
+    If $f: A \rightarrow B$, $g: B \rightarrow C$, and $h: C \rightarrow D$, then $h \circ (g \circ f) = (h \circ g) \circ f$.
+\end{prop}
+\begin{proof}
+    \begin{align*}
+        (h \circ (g \circ f))(x) &= h((g \circ f)(x))\\
+                                 &= h(g(f(x)))\\
+                                 &= (h \circ g)(f(x))\\
+                                 &= ((h \circ g) \circ f(x))
+    \end{align*}
+    Therefore, $h \circ (g \circ f) = (h \circ g) \circ f$.
+\end{proof}
+
+\begin{ex}
+    Let $S$ be the set of polynomials in one variable.
+    Given the polynomial $f$ defined by $f(x) = \sum_{i = 0}^k a_i x^i$, let $Df$ denote the polynomial whose value $x$ is $\sum_{i=1}^k a_i i x^{i-1}$.
+    The operator $D$ is a function $D: S \rightarrow S$.
+    It is surjective; the polynomial with coefficients $\{a_k\}$ is the image of the polynomial $\sum_{i=0}^k \frac{a_i x^{i+1}}{i + 1}$.
+    The operator $D$ is not injective; the polynomials $f$ and $g$ defined by $f(x) = x + 1$ and $g(x) = x + 2$ have the same image.
+
+    We define another operator $J: S \rightarrow S$.
+    For $f(x) = \sum_{i=0}^k a_i x^i$, let $Jf$ denote the polynomial whose value at $x$ is $\sum_{i=0}^k \frac{a_i x^{i+1}}{i + 1}$.
+    If $Jf = Jg$, then term-by-term comparison of coefficients show that $f = g$; hence $J$ is injective.
+    On the other hand, $J$ is not surjective, because there is no polynomial $f$ such that $Jf$ is a nonzero polynomial of degree 0.
+
+    We can compose operators.
+    We have $D(J(f)) = f$ for all $f \in S$, but $J(D(f))$ does not equal $f$ when $f(0) \neq 0$.
+\end{ex}
+
+\subsection{Cardinality}
+\begin{defn}
+    A set $A$ is \textsf{finite} if there is a bijection from $A$ to $[k]$ for some $k \in \mathbb{N} \cup \{0\}$.
+    A set is \textsf{infinite} if there is no such bijection.
+\end{defn}
+
+\begin{prop} \label{prop:bij_card}
+    If there is a bijection $f: [m] \rightarrow [n]$, then $m = n$.
+\end{prop}
+\begin{proof}
+    We use induction on $n$.
+    Consider the case $n = 1$.
+    Since $f$ is a bijection, there should exist $x \in [m]$ such that $f(x) = 1$.
+    For any $e \in [m]$, it should correspond with some element in $[1]$, which can only be $1$.
+    Thus $f(e) = 1$.
+    Since $f$ is injective, $f(e) = f(1) = 1$ implies $e = 1$ for any $e \in [m]$.
+    Therefore, $m = 1$.
+
+    Suppose now as an induction hypothesis that if there is a bijection $f: [m] \rightarrow [k]$, then $m = k$ for some $k \geq 2$.
+    Let $g: [m] \rightarrow [k+1]$ be a bijection.\\
+    \textbf{Case 1}: $g(m) = k+1$\\
+    \indent Then $g|_{[m - 1]}: [m - 1] \rightarrow [k]$ is a bijection.
+    Then from the induction hypothesis, $m - 1 = k$.
+    Hence $m = k + 1$.
+
+    \noindent \textbf{Case 2}: $g(m) \in [k]$\\
+    \indent Let $g(m) = a \in [k]$.
+    Now define $h: [k + 1] \rightarrow [k + 1]$ as the following:
+    \[
+        h(x) = \begin{cases}
+            k + 1 &\text{if }x = a\\
+            a &\text{if }x = k + 1\\
+            x &\text{otherwise}.
+        \end{cases}
+    \]
+    Then we see that $h \circ g$ is still a bijection, as $h$ and $g$ are both bijective.
+    Note that $(h \circ g)(m) = h(g(m)) = h(a) = k + 1$.
+    Since this was the case in \textbf{Case 1}, $m = k + 1$.
+
+    Therefore, from the induction principle, existence of a bijection from $[m]$ to $[n]$ implies $m = n$.
+\end{proof}
+
+\begin{cor} \label{cor:finite_bij}
+    If $A$ is finite, then for exactly one $n$, there is a bijection from $A$ to $[n]$.
+\end{cor}
+\begin{proof}
+    Since $A$ is finite, there is a bijection $f: A \rightarrow [k]$ for some $k \in \mathbb{N} \cup \{0\}$.
+    From Proposition~\ref{prop:bij_card}, $n = k$.
+\end{proof}
+
+\begin{defn}
+    The \textsf{size} of a finite set $A$, written $|A|$, is the unique $n$ such that there is a bijection from $A$ to $[n]$.
+    A set of size $n$ is called \textsf{$n$-element set} or \textsf{$n$-set}.
+\end{defn}
+
+\begin{cor} \label{cor:sum_disjoint}
+    If $A$ and $B$ are disjoint finite sets, then
+    \[
+        |A \cup B| = |A| + |B|.
+    \]
+\end{cor}
+\begin{proof}
+    From Corollary~\ref{cor:finite_bij}, there are bijections $f: A \rightarrow [n]$, $g: B \rightarrow [m]$ for some $n, m \in \mathbb{N}$.
+    Now construct $h: A \cup B \rightarrow [m + n]$ as following:
+    \[
+        h(x) = \begin{cases}
+            f(x) &\text{if } x \in A\\
+            g(x) + n &\text{if } x \in B\\
+        \end{cases}.
+    \]
+    We need not consider the case $x \in A \wedge x \in B$ as $A$ and $B$ are disjoint.
+    Note that $1 \leq f(x) \leq n$ and $n + 1 \leq g(x) + n \leq m + n$.
+    We shall show that $h$ is a bijection.
+
+    Choose any $k \in [m + n]$.
+    If $k \leq m$, the only possible $x \in A \cup B$ to make $h(x) \leq n$ is the case when $x \in A$.
+    Since $f$ is a bijection, there exists a unique $x \in A$ such that $f(x) = h(x) = k$.
+
+    Similarly, if $m < k \leq m + n$, the only possible case is when $x \in B$.
+    There exists $l \in [n]$ such that $m + l = n$.
+    Also, there exists a unique $x \in B$ such that $g(x) = l$ since $g$ is a bijection.
+    Thus, such $x$ satisfies the condition $h(x) = l + m = k$.
+
+    Therefore, there is a unique $x \in A \cup B$ such that $h(x) = k$ implying $h$ is a bijection.
+\end{proof}
+
+\begin{cor}
+    Every nonempty finite set of real numbers has both a maximum element and a minimum element.
+\end{cor}
+\begin{proof}
+    We use induction on the size of a set $S$, $|S| = n$.
+    For the case $n = 1$, the only element of $S$ should both be the maximum and the minimum.
+
+    Now as an induction hypothesis, suppose that a set of $k$ elements has both a maximum element and a minimum element, for some $k \geq 2$.
+    Cosider a set $S$ where $|S| = k + 1$.
+    Choose any element $e \in S$.
+    Then from the induction hypothesis, there is both a maximum element $M$ and a minimum element $m$ of $S \backslash \{e\}$.
+    We see that $\max (\{e, M\})$ and $\min (\{e, m\})$ are the maximum and the minimum element of $S$, respectively.
+    Thus, there is both a maximum and a minimum element of any nonempty finite set of real numbers.
+\end{proof}
+
+\begin{defn}
+    An infinite set $A$ is \textsf{countably infinite} (or \textsf{countable}) if there is a bijection from $A$ to $\mathbb N$; otherwise $A$ is \textsf{uncountably infinite} (or \textsf{uncountable}).
+    Sets $A$ and $B$ have the same \textsf{cardinality} if there is a bijection from $A$ to $B$.
+\end{defn}
+
+\begin{ex}
+    $\mathbb Z$ and $\mathbb Q$ are countable, whereas $\mathbb R$ is not.
+\end{ex}
+\begin{proof}
+    From Example~\ref{ex:NZbij}, $\mathbb Z$ is countable.
+    Now consider the following sequence:
+    \[
+        \frac 01, \frac 11, -\frac 11, \frac 12, \frac 21, -\frac 12, -\frac 21, \frac 13, \frac 23, \frac 31, \frac 32, -\frac 13, -\frac 23, -\frac 31, -\frac 32, \frac 14, \dots
+    \]
+    It is evident that all rational numbers will appear at the above sequence.
+    Since we can see a sequence as a bijective function from $\mathbb N$ to the elements of the sequence, the above sequence shows the bijection from $\mathbb N$ to $\mathbb Q$.
+    Thus $\mathbb Q$ is countable.
+    
+    We now show the uncountability of $\mathbb R$ using the famous diagonal argument from Cantor.
+    Every real number in $(0, 1]$ can be represented in the form $0.a_1 a_2 a_3 \dots$ uniquely.
+    Note that real number like $0.1$ should be written in form $0.999\cdots$ to ensure the uniqueness of such representation.
+    For the sake of contradiction, suppose there is a bijection $f$ from $\mathbb{N}$ to $\mathbb{R}$:
+    \begin{align*}
+        f(1) &= 0.a_{11} a_{12} a_{13} \dots\\
+        f(2) &= 0.a_{21} a_{22} a_{23} \dots\\
+        \vdots \\
+        f(k) &= 0.a_{k1} a_{k2} a_{k3} \dots\\
+        \vdots
+    \end{align*}
+    Now consider the number $b \in (0, 1]$ defined as the following:
+    \[
+        b = 0.b_1 b_2 b_3 \dots \text{, where } b_i = \begin{cases}
+            1 &\text{if } a_{ii} \neq 1\\
+            0 &\text{if } a_{ii} = 1
+        \end{cases}
+    \]
+    Such $b$ is never equal with $f(k)$ for all $k \in \mathbb N$, as $b_i \neq a_{ii}$ for all $i \in \mathbb N$.
+    However, $f$ is a bijection. $\lightning$
+    
+    Therefore, no bijection from $\mathbb N$ to $\mathbb R$ exists, so $\mathbb R$ is uncountably infinite.
+\end{proof}
+
+\begin{thm}
+    The sets $\mathbb{N} \times \mathbb{N}$ and $\mathbb N$ has the same cardinality.
+    That is, $\mathbb{N} \times \mathbb{N}$ is countable.
+\end{thm}
+\begin{proof}
+    We can construct the following sequence:
+    \[
+        (1,1), (2,1), (1,2), (3,1), (2,2), (1,3), (4,1), (3,2), \dots
+    \]
+    It is evident that all elements in $\mathbb{N} \times \mathbb{N}$ are included in the above sequence.
+    Since it is a sequence, there is a bijection from $\mathbb{N}$ to $\mathbb{N} \times \mathbb{N}$.
+\end{proof}
+
+\begin{prob}
+    Show that $(0, 1)$ and $\mathbb R$ have the same cardinality.
+\end{prob}
+\begin{proof}
+    We can construct a bijection from $(0, 1)$ to each point of $x^2 + (y-1)^2 = 1$ where $y < 1$.
+    Simply consider the angle created by the point $(x, y)$ on the half-circumference, $(0, 1)$, and $(1,1)$, which in $(0, \pi)$.
+    Thus, consider the bijection $f(x) = \pi x$, which is a bijection between the angle and $(0, 1)$.
+    Then the angle makes a bijection to the half-circumference.
+    Now consider the intersection of the half-line connecting $(x, y)$ from $(0,1)$ and the $x$-axis.
+    We see that it creates a bijection from each point of the half-circumference and the point on the $x$-axis.
+    Thus, there is a bijection from the half-circumference to $\mathbb R$.
+    Therefore, there is a bijection from $(0, 1)$ to $\mathbb R$, implying that the cardinalities of the two sets are equal.
+\end{proof}
+
+\begin{lem} \label{lem:forSchroeder}
+    For two sets $A$ and $B$, if $B \subseteq A$ and $f: A \rightarrow B$ is injective, there exists a bijection between $A$ and $B$.
+\end{lem}
+\begin{proof}
+    Let $Y = A - B$ and $X = Y \cup f(Y) \cup f^2(Y) \cup \dots$.
+    Then $Y \cap B = \varnothing$ and $f^k (Y) \subseteq B$.
+    Thus, 
+    \[
+        (\forall k \geq 1)\ Y \cap f^k (Y) = \varnothing.
+    \]
+    Since $f$ is an injection, $f^m$ is also an injection for any $m \geq 1$.
+    Then we have
+    \[
+        (\forall k, m \geq 1)\ f^m(Y) \cap f^m \left(f^k(Y)\right) = f^m(Y) \cap f^{m + k} (Y) = \varnothing.
+    \]
+    Thus, all $f^k(Y)$'s are disjoint for all $k \geq 0$.
+
+    From $X = Y \cup f(Y) \cup f^2(Y) \cup \dots$, we have $f(X) = f(Y) \cup f^2(Y) \cup f^3(Y) \cup \dots \subseteq B$.
+    Since $f$ is injective, $f|_X: X \rightarrow f(X)$ is a bijection.
+    Also, we have
+    \[
+        A - X = (B \cup Y) - (Y \cup f(X)) = B - f(X).
+    \]
+    Define $h: A \rightarrow B$ by:
+    \[
+        h(z) = \begin{cases}
+            f(z) &\text{if } z \in X\\
+            z &\text{if } z \in A - X
+        \end{cases}
+    \]
+    By definition, $h$ is injective.
+    Let $b \in B$ be given.
+    If $b \in f(X)$, then $f(z) = b$ for some $z \in X$.
+    Then $h(z) = f(z) = b$.
+    If $b \in B - f(X)$, then $b \in A - X$, implying $h(b) = b$.
+    Hence $h$ is a surjection.
+    Therefore, $h$ is a bijection from $A$ to $B$
+\end{proof}
+
+\begin{thm} [Schr\"oder-Bernstein Theorem] \label{thm:shroder}
+    If $f: A \rightarrow B$ and $g: B \rightarrow A$ are injections, then there exists a bijection $h: A \rightarrow B$, and hence $A$ and $B$ have the same cardinality.
+\end{thm}
+\begin{proof}
+    $g: B \rightarrow A$, so $g(B) \subseteq A$.
+    Now consider $g \circ f: A \rightarrow g(B)$.
+    Since both $f$ and $g$ are injections, $g \circ f$ is also an injection.
+    From Lemma~\ref{lem:forSchroeder}, there is a bijection between $A$ and $g(B)$.
+    Let such bijection be $h'$.
+    Now define $h = g^{-1} \circ h': A \rightarrow B$.
+    Note that $g^{-1}: g(B) \rightarrow B$ is a bijection as $g$ is an injection.
+    Thus, $h$, a composition of two bijections is also a bijection.
+\end{proof}
+
+\subsection{Exercises for Chapter 5}
+\begin{exercise}
+    Let $f: A \rightarrow B$ be a function.
+    Prove that there is a function $g: B \rightarrow A$ such that $f \circ g = I_B$ iff $f$ is a surjection.
+\end{exercise}
+\begin{proof}
+    We need to show that for functions $f: A \rightarrow B$,
+    \[
+        (\exists g: B \rightarrow A) (\forall x \in B)\ (f \circ g)(x) = x \Leftrightarrow (\forall y \in B)(\exists x \in A)\ f(x) = y.
+    \]
+
+    We first show the $\Rightarrow$ direction of the statement.
+    Choose any $y \in B$. 
+    Since $(\forall x \in B)\ (f \circ g)(x) = x$, $(f \circ g)(y) = f(g(y)) = y$.
+    Thus we have $x = g(y) \in A$ such that $f(x) = y$.
+    Therefore, 
+    \[
+        (\exists g: B \rightarrow A) (\forall x \in B)\ (f \circ g)(x) = x \Rightarrow (\forall y \in B)(\exists x \in A)\ f(x) = y.
+    \]
+
+    Now we show the $\Leftarrow$ direction of the statement.
+    Since there is always a corresponding $x \in A$ to any $y \in B$ since $f$ is surjective, we can define a nonempty set $S(y) \subset A$ such that $S(y) = \{e \in A | f(e) = y\}$.
+    We construct a function $g: B \rightarrow A$:
+    \[
+        g(x) = a,
+    \]
+    where $a$ is an arbitrary element from $S(x) \neq \varnothing$.
+    Then,
+    \begin{align*}
+        (f \circ g)(x) &= f(g(x))\\
+                       &= f(a) &\text{where $a \in S(x) = \{e \in A | f(e) = x\}$}\\
+                       &= x.
+    \end{align*}
+    Thus, $f\circ g = I_B$.
+    Therefore,
+    \[
+        (\exists g: B \rightarrow A) (\forall x \in B)\ (f \circ g)(x) = x \Leftarrow (\forall y \in B)(\exists x \in A)\ f(x) = y.
+    \]
+
+    We showed both direction of the given statement.
+\end{proof}
+
+\begin{exercise}
+    Suppose that $f: X \rightarrow Y$ is a function.
+    Define $\overrightarrow f: \mathcal{P}(X) \rightarrow \mathcal{P}(Y)$ by
+    \[
+        \overrightarrow f(A) = \{f(x) | x \in A\},
+    \]
+    for $A \in \mathcal{P}(X)$.
+    Similarly, define $\overleftarrow f: \mathcal{P}(Y) \rightarrow \mathcal{P}(X)$ by
+    \[
+        \overleftarrow f(B) = \{x \in X | f(x) \in B\},
+    \]
+    for $B \in \mathcal{P} (Y)$.
+
+    Prove that the followings are equivalent:
+    \begin{enumerate}
+        \item $f$ is injective.
+        \item $\overrightarrow f$ is injective.
+        \item $\overleftarrow f$ is surjective.
+    \end{enumerate}
+\end{exercise}
+\begin{proof}
+    We first show that if $f$ is injective, then $\overrightarrow f$ is injective.
+    Choose any two distinct $X_1$ and $X_2$ from $\mathcal{P}(X)$.
+    If one of $X_1$ and $X_2$ is an empty set, let it be $X_1$, without loss of generality.
+    Then $\overrightarrow{f}(X_1) = \overrightarrow{f}(\varnothing) = \varnothing$, and $\overrightarrow{f}(X_2) \neq \varnothing$, so $f(X_1) \neq f(X_2)$.
+    Now consider the case when both $X_1$ and $X_2$ are not empty.
+    Note that $X_1 \neq X_2$ implies the following:
+    \[
+        X_1 - X_2 \neq \varnothing \vee X_2 - X_1 \neq \varnothing.
+    \]
+    Without loss of generality, assume $X_1 - X_2 \neq \varnothing$.
+    Then, there is $x_1 \in X_1 - X_2$.
+    There is no other element in $X$ other than $x_1$ such that $f(x) = f(x_1)$, since $f$ is injective.
+    Thus $f(x_1) \in \overrightarrow{f}(X_1) - \overrightarrow{f}(X_2)$.
+    Therefore, $\overrightarrow{f}(X_1) \neq \overrightarrow{f}(X_2)$, implying $\overrightarrow{f}$ is injective.
+
+    Now show that if $\overrightarrow f$ is injective, then $f$ is injective as well.
+    Choose any two distinct $x_1$ and $x_2$ from $X$.
+    Consider $\{x_1\}$ and $\{x_2\}$ from $\mathcal{P}(X)$.
+    Since $\overrightarrow f$ is injective,
+    \begin{align*}
+        \overrightarrow{f}(\{x_1\}) \neq \overrightarrow{f}(\{x_2\}) &\Rightarrow \{f(x_1)\} \neq \{f(x_2)\}\\
+                                                                     &\Rightarrow f(x_1) \neq f(x_2)
+    \end{align*}
+    Therefore, $f$ is injective.
+
+    We shall show that if $f$ is injective, then $\overleftarrow{f}$ is surjective.
+    Choose any $Y_1$ from $\mathcal{P}(Y)$.
+    If $Y_1 = \varnothing$, then $\overleftarrow{f}(Y_1) = \overleftarrow{f}(\varnothing) = \varnothing \in \mathcal{P}(X)$.
+    Now consider the case when $Y_1$ is nonempty.
+    For any $y \in Y_1$, there are two cases: there is a unique $x \in X$ such that $f(x) = y$, or there is no $x \in X$ at all such that $f(x) = y$.
+    For the either case, $\{x | f(x) \in Y\} \in \mathcal{P}(X)$.
+    Thus, $\overleftarrow{f}$ is surjective.
+
+    Finally, show that $\overleftarrow{f}$ being a surjection implies that $f$ is injective.
+    For the sake of contradiction, suppose $f$ is not injective.
+    Then for some $y_1 \in Y$, there are two distinct $x_1$ and $x_2$ in $X$ such that $f(x_1) = f(x_2) = y_1$.
+    Since $\overleftarrow{f}$ is surjective, there is $Y_1, Y_2, Y_3 \in \mathcal{P}(Y)$ such that $\overleftarrow{f}(Y_1) = \{x_1\}$ and $\overleftarrow{f}(Y_2) = \{x_2\}$.
+    Only $y \in Y$ such that $y = f(x_1) = f(x_2)$ is $y = y_1$ from the definition of a function.
+    Thus, $y_1 \in Y_1$ and $y_1 \in Y_2$.
+    However, if $y_1 \in Y_1$, then $x_2 \in \overleftarrow{f}(Y_1)$ from definition of $\overleftarrow{f}$. $\lightning$
+    Therefore, $f$ is injective if $\overleftarrow{f}$ is a surjection.
+
+    We now have that all three expressions are equivalent.
+\end{proof}
+
+\begin{exercise}
+    Let $B$ be a proper subset of a set $A$, and let $f$ be a bijection from $A$ to $B$.
+    Prove that $A$ is an infinite set.
+\end{exercise}
+\begin{proof}
+    For the sake of contradiction, suppose that $A$ is finite, i.e., there is a bijection $h: A \rightarrow [n]$ for some $n \in \mathbb{N}$.
+    Note that the existance of a proper subset of $A$ ensures that $A$ is nonempty.
+    
+    $B$ is a proper subset of $A$, so $\exists a \in A - B \neq \varnothing$.
+    Then we see that there is no bijection from $B$ to $[n]$.
+    However, we do have a bijection $f$ from $A$ to $B$ and a bijection $h$ from $A$ to $[n]$. $\lightning$
+
+    Hence the assumption that $A$ is finite is wrong.
+    Therefore, $A$ is an infinite set.
+\end{proof}
+
+\begin{exercise}
+    Let $f$ be a function from $A$ to itself.
+    Prove that $f$ is injective iff $f$ is surjective.
+    Prove that this equivalence fails when $A$ is infinite.
+\end{exercise}
+\begin{proof}
+    Consider the case when $A$ is finite.
+
+    We first show that if $f$ is injective, then $f$ is surjective.
+    Define a function $g: A \rightarrow f(A)$, where $g(x) = f(x)$.
+    Then $g$ is a bijection, since $f$ is injective and $f(A)$ is now the codomain of $g$.
+    Thus, $|A| = |f(A)|$.
+    We also have $f(A) \subseteq A$, so $A = f(A)$.
+    Therefore $f = g$, implying $f$ is also a bijection, thus surjective as well.
+
+    Now show that if $f$ is surjective, then $f$ is injective.
+    For the sake of contradiction, suppose 
+    \[
+        (\exists y_1 \in A)(\exists x_1, x_2 \in A)\ f(x_1) = f(x_2) = y_1.
+    \]
+    Then for a set $S = \{x | f(x) = y_1\}$, $|S| \geq 2$.
+    Define a function $h: A \backslash S \rightarrow A \backslash \{y_1\}$, where $h(x) = f(x)$.
+    Choose any $y^* \in A \backslash \{y_1\}$.
+    Since $f$ is surjective, there is $x^* \in A$ such that $f(x^*) = y^*$.
+    $A \backslash S = \{ x | f(x) \neq y_1\}$, so $x^* \in A \backslash S$.
+    Thus, 
+    \[
+        (\forall y \in A \backslash \{y_1\})(\exists x \in A \backslash S)\ f(x) = h(x) = y
+    \]
+    Hence $h$ is surjective.
+    However, $|A \backslash \{y_1\}| = |A| - 1$ whereas $|A \backslash S| \leq |A| - 2$.
+    With a cardinality of the domain smaller than the codomain, constructing a surjection is impossible. $\lightning$
+
+    Hence our previous assumption that $f$ is not an injection is wrong.
+    Therefore, if $f$ is surjective, then $f$ is injective.
+
+    We have shown that when $A$ is a finite set, $f$ is injective iff $f$ is surjective.
+    However, for the case when $A$ is an infinite set, the statement does not hold.
+    For instance, consider the function $f: \mathbb{N} \rightarrow \mathbb{N}$, defined by $f(n) = 2n$.
+    $f$ is clearly an injection, yet it is not a surjection.
+\end{proof}
+
+\begin{exercise}
+    Let $A_1, A_2, \dots$ be a sequence of sets, each of which is countable.
+    Prove that the union of all the sets in the sequence is a countable set.
+\end{exercise}
+\begin{proof}
+    Before we prove the statement, we show that a union of two countable sets is countable as well.
+
+    Assume two sets $A$ and $B$ are countable.
+    Then there exist bijections $f_A: A \rightarrow \mathbb N$ and $f_B: B \rightarrow \mathbb N$.
+    Now define a function $f: A \cup B \rightarrow \mathbb N$:
+    \[
+        f(x) = \begin{cases}
+            2f_A{x} &\text{if } x \in A\\
+            2f_B(x) + 1 &\text{if } x \in B \backslash A
+        \end{cases}
+    \]
+    $f$ is injective, as $x \in A$ corresponds to even numbers and $f_A$ is injective, whereas $x \in B \backslash A$ corresponds to odd numbers and $f_B$ is injective.
+
+    On the other hand, $f_A: A \rightarrow \mathbb N$ is a bijection.
+    Hence, $f_A^{-1}: \mathbb{N} \rightarrow A$ is an injection.
+    Let $g: \mathbb{N} \rightarrow A \cup B$ be defined as $g(x) = f_A^{-1}(x)$.
+    Then $g$ is an injection.
+
+    We have shown that there are injections both from $A \cup B$ to $\mathbb N$ and $\mathbb N$ to $A \cup B$.
+    From Theorem~\ref{thm:shroder}, $A \cup B$ and $\mathbb N$ have the same cardinality, i.e., $A \cup B$ is countable.
+
+    Now we prove the given statement, and we use induction on the length of the sequence $n$.
+    For the case $n = 1$, when $A_1$ is countable, union of all sets in the sequence, which is $A_1$ itself, is countable.
+    Suppose as an induction hypothesis that for some $k \geq 2$, if $A_i$ is countable for all $i \in [k]$, then $\bigcup_{i=1}^n A_i$ is countable.
+    Consider $\bigcup_{i=1}^{n+1} A_i$ when all $A_i$'s are countable for $i \in [k+1]$.
+    From the induction hypothesis, $\bigcup_{i=1}^n A_i$ is countable.
+    We have shown above that a union of two countable sets is countable.
+    $\bigcup_{i=1}^{n+1} A_i = \bigcup_{i=1}^n \cup A_{n+1}$ is thus countable.
+    Therefore, from the induction principle, a union of all the sets in a sequence of coutable sets is countable.
+\end{proof}
+
+\begin{exercise}
+    Construct an explicit bijection from the open interval $(0, 1)$ to the closed interval $[0, 1]$.
+\end{exercise}
+\begin{proof}
+    Construct a sequence $\left< a_i \right>$ of rational numbers in $(0, 1)$:
+    \[
+        a_1 = \frac 12, a_2 = \frac 13, a_3 = \frac 23, a_4 = \frac 14, a_5 = \frac 34, a_6 = \frac 15, a_7 = \frac 25, a_8 = \frac 35, a_9 = \frac 45, a_{10} = \frac 16, \dots
+    \]
+    Any rational number in $(0, 1)$ is included in the above sequence only once.
+    Now define a function $f: [0, 1] \rightarrow (0, 1)$:
+    \[
+        f(x) = \begin{cases}
+            a_1 &\text{if } x = 0\\
+            a_2 &\text{if } x = 1\\
+            a_{i + 2} &\text{if } x = a_i\\
+            x &\text{if } x \notin \mathbb{Q}
+        \end{cases}
+    \]
+    For any $y \in (0, 1)$, $y$ is either in $(0, 1) \cap \mathbb Q$ or $(0, 1) - \mathbb Q$.
+    Choose any $y^* \in (0, 1) \cap \mathbb Q$.
+    Then $(\exists ! k \in \mathbb{N})\ a_k = y^*$.
+    When $k = 1$, the only corresponding $x$ such that $f(x) = y^*$ is $x = 0$.
+    When $k = 2$, the only corresponding $x$ such that $f(x) = y^*$ is $x = 1$.
+    When $k \geq 3$, corresponding $x$ such that $f(x) = y^*$ is uniquely determined as $x = a_{k - 2}$.
+    Now when $y^* \in (0, 1) - \mathbb{Q}$, only $x$ such that $f(x) = y^*$ is $x = y^*$.
+    Therefore, proposed $f$ is bijective.
+\end{proof}
+\end{document}

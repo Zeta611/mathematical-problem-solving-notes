@@ -1,0 +1,770 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+\subsection{The Real Number System}
+\begin{ax}[Field Axioms] \label{ax:field}
+    A set $\mathcal F$ with operation $+$, $\cdot$, and distinguished elements 0 and 1 with $0 \neq 1$ is a \textsf{field} if the follwoing properties hold for all $a, b, c \in \mathcal F$.
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{lllll}
+            \textbf{A0}: & $a + b \in \mathcal{F}$                                             & \textbf{M0}: & $a \cdot b \in \mathcal{F}$                                                             & Closure          \\
+            \textbf{A1}: & $(a + b) + c = a + (b + c)$                                         & \textbf{M1}: & $(a \cdot b) \cdot c = a \cdot (b \cdot c)$                                             & Associativity    \\
+            \textbf{A2}: & $a + b = b + a$                                                     & \textbf{M2}: & $a \cdot b = b \cdot a$                                                                 & Commutativity    \\
+            \textbf{A3}: & $a + 0 = a$                                                         & \textbf{M3}: & $a \cdot 1 = a$                                                                         & Identity         \\
+            \textbf{A4}: & $(\forall a \in \mathcal{F})(\exists x \in \mathcal{F})\ a + x = 0$ & \textbf{M4}: & $(\forall a \in \mathcal{F}\backslash \{0\})(\exists y \in \mathcal{F})\ a \cdot y = 1$ & Inverse          \\
+                         &                                                                     & \textbf{DL}: & $a \cdot (b + c) = a \cdot b + a \cdot c$                                               & Distributive Law
+        \end{tabular}
+    \end{table}
+\end{ax}
+
+\begin{ex}
+    Show that the set of all rational numbers is a field but the set of all natural number and integers are not fields.
+\end{ex}
+\begin{proof}
+    Since $\mathbb{Q}$ satisfies all the axioms given in Axiom~\ref{ax:field}, it is a field.
+    However, $\mathbb N$ does not satisfy \textbf{A4}, e.g. $(\nexists x \in \mathbb{N})\ x + 1 = 0$, since such $x$ is uniquely determined as $-1$--even if we consider $0 \in \mathbb{N}$.
+    For $\mathbb Z$, it does not satisfies \textbf{M4}, e.g. $(\nexists x \in \mathbb{Z})\ x \cdot 2 = 1$, since such $x$ is uniquely $\frac 1 2$.
+\end{proof}
+
+\begin{thm}
+    Additive identity and multiplicative identity are unique.
+\end{thm}
+\begin{proof}
+    For the sake of contradiction, suppose there are two distinct additive identities, $x$ and $y$.
+    Then,
+    \begin{align*}
+        x + x &= x &\text{by Axiom~\ref{ax:field} \textbf{A3}}\\
+              &= x + y &\text{by Axiom~\ref{ax:field} \textbf{A3}}\\
+              &= y + x &\text{by Axiom~\ref{ax:field} \textbf{A2}}\\
+              &= y &\text{by Axiom~\ref{ax:field} \textbf{A3}}
+    \end{align*}
+    We deduced that $x = y$, which contradicts the assumption that $x$ and $y$ are distinct. $\lightning$
+    Therefore, additive identity is unique.
+
+    Showing the uniqueness of the multiplicative identity is exactly analogous.
+\end{proof}
+
+\begin{thm}
+    Additive inverse and multiplicative inverse are unique.
+\end{thm}
+\begin{proof}
+    For the sake of contradiction, suppose there are two distinct additive inverses, $x$ and $y$, for an element $a$.
+    Then,
+    \begin{align*}
+        x &= x + 0 &\text{by Axiom~\ref{ax:field} \textbf{A3}}\\
+          &= x + (a + y) &\text{by Axiom~\ref{ax:field} \textbf{A4}}\\
+          &= (x + a) + y &\text{by Axiom~\ref{ax:field} \textbf{A1}}\\
+          &= (a + x) + y &\text{by Axiom~\ref{ax:field} \textbf{A2}}\\
+          &= 0 + y &\text{by Axiom~\ref{ax:field} \textbf{A4}}\\
+          &= y &\text{by Axiom~\ref{ax:field} \textbf{A3}}
+    \end{align*}
+    Thus, $x = y$, which contradicts the assumption that $x$ and $y$ are distinct. $\lightning$
+
+    Showing the uniqueness of the multiplicative inverse in exactly analogous.
+\end{proof}
+
+The additive inverse of $a$ is called the \textsf{negative} of $a$ and denoted by $-a$.
+The multiplicative inverse of $a$ is called \textsf{reciprocal} of $a$ and denoted by $a^{-1}$.
+
+Let the set of natural numbers $\mathbb{N} = \{1, 2, 3, \dots, n, \dots \}$.
+Then since $\mathbb N$ is a subset of $\mathbb R$, the operation addtion is defined.
+Now let $- \mathbb{N} = \{ -n \mid n \in \mathbb{N}\}$.
+Then the set of integers $\mathbb Z$ can be defined as
+\[
+    \mathbb{Z} = \mathbb{N} \cup \{0\} \cup - \mathbb{N}.
+\]
+Similarly, the set of rational numbers $\mathbb{Q}$ is defined as
+\[
+    \mathbb{Q} = \{ a b^{-1} \mid a, b \in \mathbb{Z} \}.
+\]
+
+\begin{ax}[Order Axioms] \label{ax:order}
+    A \textsf{positive set} in a field $\mathcal F$ is a set $P \subseteq \mathcal{F}$ such that for $a, b \in \mathcal{F}$,
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{lll}
+            \textbf{P1}: & $a, b \in P \Rightarrow a + b \in P$                                          & Closure under Addition       \\
+            \textbf{P2}: & $a, b \in P \Rightarrow a \cdot b \in P$                                      & Closure under Multiplication \\
+            \textbf{P3}: & $a \in \mathcal{F}$ implies exactly one of $a = 0$, $a \in P$, or $-a \in P$. & Trichotomy
+        \end{tabular}
+    \end{table}
+\end{ax}
+
+The \textsf{ordered field} is a field with a positive set $P$.
+In an ordered field, we define $a < b$ by $b - a \in P$.
+The relations $\leq$, $>$, and $\geq$ have analogous definitions in terms of $P$.
+
+\begin{prop}
+    Let $a$, $b$, and $c$ be element of an ordered field. Then,
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{lll}
+            \textbf{O1}: & $a \leq a$                                     & Reflextivity   \\
+            \textbf{O2}: & $a \leq b \wedge b \leq a \Rightarrow a = b$    & Antisymmetry   \\
+            \textbf{O3}: & $a \leq b \wedge b \leq c \Rightarrow a \leq c$ & Transitivity   \\
+            \textbf{O4}: & $a \leq b \vee b \leq a$ is true.              & Total Ordering
+        \end{tabular}
+    \end{table}
+\end{prop}
+\begin{proof}
+    \textbf{O1}\\
+    Since $a = a$, $a \leq a$.
+    \\
+    \\
+    \textbf{O2}\\
+    For the sake of contradiction, suppose $a \neq b$.
+    Let $c = a - b$.
+    Then, 
+    \begin{align*}
+        c + (b - a) &= (a - b) + (b - a)\\
+                    &= a + (-b + b) - a &\text{by Axiom~\ref{ax:field} \textbf{A1}}\\
+                    &= a + 0 - a &\text{by Axiom~\ref{ax:field} \textbf{A4}}\\
+                    &= a - a &\text{by Axiom~\ref{ax:field} \textbf{A3}}\\
+                    &= 0 &\text{by Axiom~\ref{ax:field} \textbf{A4}}\\
+    \end{align*}
+    Thus, by Axiom~\ref{ax:field} \textbf{A4}, $-c = b - a$.
+    \begin{align*}
+        a \neq b \wedge a \leq b \wedge a \leq b &\Rightarrow a < b \wedge b < a \\
+                                                 &\Rightarrow b - a \in P \wedge a - b \in P\\
+                                                 &\Rightarrow -c \in P \wedge c \in P \ \lightning &\text{by Axiom~\ref{ax:order} \textbf{P3}}
+    \end{align*}
+    Therefore, our assumption that $a \neq b$ is wrong, so $a = b$.
+    \\
+    \\
+    \textbf{O3}
+    \begin{align*}
+        a \leq b \wedge b \leq c &\Rightarrow (a = b \vee b - a \in P) \wedge (b = c \vee c - b \in P)\\
+                                 &\Rightarrow (c - b) + (b - a) \in P \vee (c - b) + (b - a) = 0 &\text{by Ax.~\ref{ax:field} \textbf{A3} \& Ax.~\ref{ax:order} \textbf{P1}}\\
+                                 &\Rightarrow c - a \in P \vee c - a = 0&\text{by Axiom~\ref{ax:field}}\\
+                                 &\Rightarrow a \leq c
+    \end{align*}
+    \\
+    \\
+    \textbf{O4}\\
+    For the sake of contradiction, suppose none of $a \leq b$ and $b \leq a$ holds.
+    Then, neither of $a - b = 0$, $a - b \in P$, $b - a \in P$ holds, which contradicts Axiom~\ref{ax:order} \textbf{P3}. $\lightning$
+\end{proof}
+
+\begin{defn} \label{def:sup}
+    If $S \subseteq \mathcal{F}$, then $\beta \in \mathcal{F}$ is an \textsf{upper bound} for $S$ if $x \leq \beta$ for all $x \in S$.
+    An upper bound $\alpha$ for $S$ is the \textsf{least upper bound} or \textsf{supremum} of $S$ if $S$ has no upper bound less than $\alpha$.
+    
+    Similarly, $\beta \in \mathcal{F}$ is a \textsf{lower bound} for $S$ if $x \geq \beta$ for all $x \in S$, and a lower bound $\alpha$ for $S$ is the \textsf{greates lower bound} or \textsf{infimum} of $S$ if $S$ has no lower bound greater than $\alpha$.
+
+    We use $\sup S$ and $\inf S$ for $S$ to denote the supremum and infimum of $S$, if they exist.
+\end{defn}
+
+\begin{ax}[Completeness Axiom] \label{ax:comp}
+    An ordered field $\mathcal F$ is \textsf{complete} if every nonempty subset of $\mathcal F$ that has an upper bound in $\mathcal F$ has a least upper bound in $\mathcal F$.
+\end{ax}
+
+The set of real numbers $\mathbb R$ can be defined by the \textsf{complete ordered field}, because any two complete ordered field is isomorphic to each other.
+
+\begin{ex} \label{ex:exists_sq2}
+    Prove the existence of $\sqrt 2$.
+\end{ex}
+\begin{proof}
+    Let $S = \{ x \mid x^2 < 2 \wedge x > 0\} \subset \mathbb{R}$.
+    Since $1 \in S$ and $S \subset [0, 2]$, it is both bounded and nonempty.
+    Thus, by Axiom~\ref{ax:comp}, $\exists \sup S \in \mathbb{R}$.
+    Let $\alpha = \sup S$.
+
+    To show $\alpha = \sqrt 2$, we show $\neg (\alpha^2 > 2 \vee \alpha^2 <2)$.
+    For the sake of contradiction, suppose $\alpha^2 > 2$.
+    \begin{align*}
+        \alpha^2 > 2 &\Rightarrow \frac{1}{\alpha^2} < \frac 1 2\\
+                     &\Rightarrow \left( \frac{2}{\alpha}\right)^2 < 2
+    \end{align*}
+    Thus, we get $\alpha^2 > 2 > \left(\frac 2 \alpha\right)^2$.
+    From AM--GM inequality,
+    \[
+        \beta = \frac 1 2 \left(\alpha + \frac 2 \alpha\right) > \sqrt{\alpha \cdot \frac 2 \alpha} = \sqrt 2
+    \]
+    Hence, $\beta^2 > 2$.
+    Since $\beta$ is an arithmetic mean of $\alpha$ and $\frac 2 \alpha$, and $\alpha > \frac 2 \alpha$, we see that $\alpha > \beta > \frac 2 \alpha$.
+    Therfore, $\alpha^2 > \beta^2 > 2$.
+    Then, $\beta$ is smaller than $\alpha = \sup S$ yet it is still an upper bound of $S$. $\lightning$
+    Therefore, the assumption that $\alpha^2 > 2$ is wrong.
+
+    We now check $\alpha^2 < 2$ is also not true.
+    Again, suppose $\alpha^2 < 2$ for the sake of contradiction.
+    \begin{align*}
+        \alpha^2 < 2 &\Rightarrow \frac{1}{\alpha^2} > \frac 1 2\\
+                     &\Rightarrow \left(\frac 2 \alpha\right)^2 > 2
+    \end{align*}
+    From similar argument, $\beta = \frac 1 2 \left(\alpha + \frac 2 \alpha\right) > \sqrt 2$.
+    Thus, we have
+    \begin{align*}
+        \beta > \sqrt 2 &\Rightarrow \beta^2 > 2\\
+                        &\Rightarrow \frac{1}{\beta^2} < \frac 1 2\\
+                        &\Rightarrow \left(\frac{2}{\beta}\right)^2 < 2
+    \end{align*}
+    Hence, $\frac 2 \beta \in S$.
+    Also, 
+    \begin{align*}
+        \beta < \frac 2 \alpha &\Rightarrow \frac 1 \beta > \frac \alpha 2\\
+                               &\Rightarrow \frac 2 \beta > \alpha\\
+                               &\Rightarrow \left(\frac 2 \beta\right)^2 > \alpha^2
+    \end{align*}
+    Then, $\frac 2 \beta$ is larger than $\alpha = \sup S$ which is the upper bound. $\lightning$
+
+    Therefore, $\alpha^2 = 2$, which implies $\sqrt 2$ exists.
+\end{proof}
+
+\subsection{Properties of Real Numers}
+In this section, $a, b, c, \dots, x, y, z$ are all real numbers.
+\begin{thm}[Cancellation Law for Addition]
+    $a + b = a + c \Rightarrow b = c$.
+\end{thm}
+\begin{proof}
+    \begin{align*}
+        a + b = a + c &\Rightarrow b + a = c + a &\text{by Axiom~\ref{ax:field} \textbf{A2}}\\
+                      &\Rightarrow b + a + (-a) = c + a + (-a) &\text{by Axiom~\ref{ax:field} \textbf{A4}}\\
+                      &\Rightarrow b + 0 = c + 0\\
+                      &\Rightarrow b = c &\text{by Axiom~\ref{ax:field} \textbf{A3}}
+    \end{align*}
+\end{proof}
+
+\begin{thm}[Property of Subtraction]
+    Let $a$ and $b$ be given. Then there is only one $x$ such that $a + x = b$.
+\end{thm}
+\begin{proof}
+    Let $c = a - b$.
+    Then, from Axiom~\ref{ax:field} \textbf{A4}, $(\exists y \in \mathbb{R})\ c + y = 0$.
+    \begin{align*}
+        c + y = 0 &\Leftrightarrow (a - b) + y = 0\\
+                  &\Leftrightarrow y + a - b = 0 &\text{by Axiom~\ref{ax:field} \textbf{A2}}\\
+                  &\Leftrightarrow y + a - b + b = 0 + b &\text{by Axiom~\ref{ax:field} \textbf{A4}}\\
+                  &\Leftrightarrow y + a = b &\text{by Axiom~\ref{ax:field} \textbf{A3}}\\
+                  &\Leftrightarrow a + y = b &\text{by Axiom~\ref{ax:field} \textbf{A2}}
+    \end{align*}
+    Thus, we see that such $x$ is uniquely determined as the additive inverse of $b-a$, which is $a - b$.
+\end{proof}
+
+\begin{prop}
+    \begin{enumerate}
+        \item $b - a = b + (-a)$
+        \item $-(-a) = a$
+        \item $a \cdot (b - c) = a \cdot b - a \cdot c$
+        \item $0 \cdot a = a \cdot 0 = 0$
+    \end{enumerate}
+\end{prop}
+\begin{proof}
+    4.\\
+    Choose any $x \in \mathbb{R}$.
+    Then,
+    \begin{align*}
+        0 &= a \cdot x - a \cdot x\\
+          &= a \cdot (x - x)\\
+          &= a \cdot 0
+    \end{align*}
+\end{proof}
+
+\begin{thm}[Cancellation Law for Multiplication] \label{thm:cancelmulti}
+    If $a \cdot b = a \cdot c$ and $a \neq 0$, then $b = c$.
+\end{thm}
+
+\begin{thm}[Possibility of Division] \label{thm:div}
+    Given $a$ and $b$ with $a \neq 0$, there is only one $x$ such that $ax = b$.
+\end{thm}
+
+In Theorem~\ref{thm:div}, $x$ is denoted by $b / a$ or $\frac b a$ and called the \textsf{quotient} of $b$ and $a$.
+In particular, $1 / a$ is the multiplicative inverse $a^{-1}$ called the reciprocal of $a$.
+
+\begin{prop}
+    \begin{enumerate}
+        \item $x \cdot 0 = 0$
+        \item $(-x)y = -(xy)$
+        \item $-x = (-1)x$
+        \item $(-x)(-y) = xy$
+    \end{enumerate}
+\end{prop}
+
+\begin{prop}
+    \begin{enumerate}
+        \item If $a \neq 0$, then $b / a = b \cdot a^{-1}$.
+        \item If $a \neq 0$, then $(a^{-1})^{-1} = a$.
+        \item If $ab = 0$, then $a = 0$ or $b = 0$.
+    \end{enumerate}
+\end{prop}
+
+\begin{prop}
+    \begin{enumerate}
+        \item If $b \neq 0$ and $d \neq 0$, then $\frac a b + \frac c d = \frac{ad + bc}{bd}$.
+        \item If $b \neq 0$ and $d \neq 0$, then $\left(\frac a b\right)\left(\frac c d\right) = \frac{ac}{bd}$.
+        \item If $b \neq 0$, $c \neq 0$, and $d \neq 0$, then $\frac{a/b}{c/d} = \frac{ad}{bc}$.
+    \end{enumerate}
+\end{prop}
+
+\begin{prop}
+    Properties of ordered field:\\
+    \indent
+    \textbf{F1}: $x \leq y \Rightarrow x + z \leq y + z$\\
+    \indent
+    \textbf{F2}: $x \leq y \wedge 0 \leq z \Rightarrow xz \leq yz$\\
+    \indent
+    \textbf{F3}: $x \leq y \wedge u \leq v \Rightarrow x + u \leq y + v$\\
+    \indent
+    \textbf{F4}: $0 \leq x \leq y \wedge 0 \leq u \leq v \Rightarrow xu \leq yv$\\
+\end{prop}
+
+\begin{prop}
+    \begin{enumerate}
+        \item $x \leq y \Rightarrow -y \leq -x$
+        \item $x \leq y \wedge z \leq 0 \Rightarrow yz \leq xz$
+        \item $x \leq y \wedge u \leq v \Rightarrow x + u \leq y + v$
+        \item $0 \leq x \leq y \wedge 0 \leq u \leq v \Rightarrow xu \leq yv$
+    \end{enumerate}
+\end{prop}
+
+\begin{thm}[The Archimedean Propoerty] \label{thm:archimedean}
+    Given positive real numbers $a$ and $b$, there exists a natural number $n$ such that $na > b$.
+    That is, no real number is an upper bound for the set $\mathbb N$.
+\end{thm}
+\begin{proof}
+    Suppose there is an upper bound for $\mathbb N$ for the sake of contradiction.
+    From Axiom~\ref{ax:comp}, there is a supremum $\alpha = \sup \mathbb N$, since $\mathbb{N} \subset \mathbb{R}$ and $\mathbb{N} \neq \varnothing$.
+    Since $1 \in \mathbb N$, $\alpha \geq 1 > 0$.
+    Then, $(\exists m \in \mathbb{N})\ \alpha \geq m > \alpha - 1$, since $\alpha$ the lowest upper bound.
+    Thus, $m + 1 > \alpha$.
+    However, $m + 1 \in \mathbb{N}$ is greather then $\alpha = \sup \mathbb N$. $\lightning$
+
+    Therefore, $\mathbb N$ is not bounded above.
+    Specifically, there always exists $n \in \mathbb N$ larger than $\frac b a \in \mathbb R$, i.e., $(\exists n \in \mathbb{N})\ na > b$.
+\end{proof}
+
+\subsection{Elementary Inequalities}
+\begin{prop}
+    \[
+        0 < a < b \Rightarrow a^2 < ab < b^2 \wedge 0 < \sqrt a < \sqrt b
+    \]
+\end{prop}
+\begin{proof}
+    We obtain $a^2 < ab$ and $ab < b^2$, since both $a$ and $b$ are positive.
+    Thus, $a^2 < ab < b^2$.
+
+    Now, for the sake of contradiction, suppose $\sqrt{b} < \sqrt{a}$.
+    Then, from $0 < a < b \Rightarrow a^2 < ab < b^2$, we see that $b < \sqrt{ab} < a$.
+    However, $a < b$. $\lightning$
+
+    Therefore, $0 < \sqrt{a} < \sqrt{b}$.
+\end{proof}
+
+\begin{defn} \label{def:abs}
+    The \textsf{absolute value} of a real number $x$, denoted by $|x|$, is defined by
+    \[
+        |x| = \begin{cases}
+            x & \text{if } x \geq 0\\
+            -x & \text{if } x \leq 0
+        \end{cases}
+    \]
+\end{defn}
+
+\begin{prop}[Triangle Inequality] \label{prop:tri}
+    If $x$ and $y$ are real numbers, then 
+    \[
+        |x + y| \leq |x| + |y|.
+    \]
+\end{prop}
+\begin{proof}
+    \begin{align*}
+        xy \leq |x||y| &\Rightarrow 2xy \leq 2|x||y|\\
+                       &\Rightarrow x^2 + y^2 + 2xy \leq x^2 + y^2 + 2|x||y|\\
+                       &\Rightarrow (x + y)^2 \leq |x|^2 + |y|^2 + 2|x||y|\\
+                       &\Rightarrow (x + y)^2 \leq (|x| + |y|)^2\\
+                       &\Rightarrow \sqrt{(x + y)^2} \leq \sqrt{(|x| + |y|)^2}\\
+                       &\Rightarrow |x + y| \leq ||x| + |y||\\
+                       &\Rightarrow |x + y| \leq |x| + |y|
+    \end{align*}
+\end{proof}
+
+The \textsf{arithmetic mean} (or average) of $x$ and $y$ is $\frac{x + y}{2}$.
+The \textsf{geometric mean} of nonnegative numbers $x$ and $y$ is $\sqrt{xy}$.
+The term \textsf{AGM Inequality} stands for \textsf{Arithmetic Mean--Geometric Mean Inequality} given by the following proposition.
+\begin{prop} \label{prop:am-gm_2}
+    If $x$ and $y$ are real numbers, then
+    \[
+        2xy \leq x^2 + y^2 \quad \text{and} \quad xy \leq \left(\frac{x+y}{2}\right)^2.
+    \]
+    If $x$ and $y$ are also nonnegative, then
+    \[
+        \sqrt{xy} \leq \frac{x + y}{2}
+    \]
+    Equality holds in each inequality iff $x = y$.
+\end{prop}
+\begin{proof}
+    \begin{align*}
+        (x - y)^2 \geq 0 &\Leftrightarrow x^2 + y^2 \geq 2xy\\
+                         &\Leftrightarrow x^2 + y^2 + 2xy \geq 4xy\\
+                         &\Leftrightarrow (x + y)^2 \geq 4xy\\
+                         &\Leftrightarrow \frac 1 4 (x + y)^2 \geq xy\\
+                         &\Leftrightarrow \left(\frac{x + y}{2}\right)^2 \geq xy
+    \end{align*}
+    Equality holds iff $(x - y)^2 = 0$, i.e., $x = y$.
+\end{proof}
+
+\begin{cor}
+    If $x > 0$ and $y > 0$, then
+    \[
+        \frac{2xy}{x + y} \leq \sqrt{xy} \leq \frac{x + y}{2}.
+    \]
+    Equality holds in each inequality iff $x = y$.
+\end{cor}
+\begin{proof}
+    From Proposition~\ref{prop:am-gm_2}, $\sqrt{xy} \leq \frac{x + y}{2}$ where equality holds iff $x = y$.
+    Substitute $\frac 1 x$ and $\frac 1 y$ to Proposition~\ref{prop:am-gm_2}:
+    \begin{align*}
+        \sqrt{\frac 1 x \frac 1 y} \leq \frac{\frac 1 x + \frac 1 y}{2} &\Leftrightarrow \frac{1}{\sqrt{xy}} \leq \frac{x + y}{2xy}\\
+                                                                        &\Leftrightarrow \sqrt{xy} \geq \frac{2xy}{x + y}
+    \end{align*}
+    Equality holds iff $\frac 1 x = \frac 1 y$, i.e., $x = y$.
+\end{proof}
+
+The expression $\frac{2xy}{x + y}$ is the \textsf{harmonic mean} of $x$ and $y$.
+General arithmetic, geometric, and harmonic mean of the numbers $a_1, a_2, \dots, a_n$ are given by
+\begin{align*}
+    \mathrm{AM} &= \frac{a_1 + a_2 + \dots + a_n}{n},\\
+    \mathrm{GM} &= \sqrt[n]{a_1 a_2 \dots a_n},\\
+    \mathrm{HM} &= \frac{n}{\frac{1}{a_1} + \frac{1}{a_2} + \dots + \frac{1}{a_n}}.
+\end{align*}
+
+\subsection{Rearrangement Inequality}
+\begin{defn}
+    Let $a_1 \leq a_2 \leq \dots \leq a_n$ and $b_1 \leq b_2 \leq \dots \leq b_n$ be any real numbers.
+    \begin{enumerate}
+        \item $S_n = a_1 b_1 + a_2 b_2 + \dots + a_n b_n$ is called the \textsf{sorted sum} of the numbers.
+        \item $R_n = a_1 b_n + a_2 b_{n-1} + \dots + a_n b_1$ is called the \textsf{reversed sum} of the numbers.
+        \item Let $c_1, c_2, \dots, c_n$ be any permutation of the numbers $b_1, b_2, \dots, b_n$.\\
+            $P_n = a_1 c_1 + a_2 c_2 + \dots + a_n c_n$ is called the \textsf{permuted sum} of the numbers.
+    \end{enumerate}
+\end{defn}
+
+\begin{thm}[Rearrangement Inequality] \label{thm:rearrange}
+    Let $S_n$, $R_n$, and $P_n$ as above. 
+    Then
+    \[
+        S_n \geq P_n \geq R_n.
+    \]
+    If $a_i$ are strictly increasing, then equality holds iff $b_i$ are all equal.
+    And unlike most inequalities, we do not require the numbers involved to be positive.
+\end{thm}
+\begin{proof}
+    We first show that $S_n \geq P_n$.
+
+    Use induction on $n$. When $n = 1$, $S_n = P_n = a_1 b_1$, so $S_n \geq P_n$ holds.
+
+    Suppose as an induction hypothesis that $S_n \geq P_n$ for some $n = k \in \mathbb N$.
+    Consider the case $n = k + 1$.
+    Let
+    \begin{align*}
+        S_n &= a_1 b_1 + \dots + a_k b_k + a_{k+1} b_{k+1}\\
+        P_n &= a_1 c_1 + \dots + a_k c_k + a_{k+1} c_{k+1}
+    \end{align*}
+    When $b_{k+1} = c_{k+1}$, it is trivial from the induction hypothesis that $S_n \geq P_n$.
+    Let $b_{k+1} = c_i$, $c_{k+1} = b_j$.
+    Since $(a_{k+1} - a_i)(b_{k+1} - b_j) \geq 0$, we see that $a_{k+1} b_{k+1} + a_i b_j \geq a_{k+1} b_j + a_i b_{k+1}$.
+    \begin{align*}
+        P_n &= a_1 c_1 + \dots + a_i c_i + \dots + a_{k+1} c_{k+1}\\
+            &= a_1 c_1 + \dots + a_i b_{k+1} + \dots + a_{k+1} b_j\\
+            &\leq a_1 c_1 + \dots + a_i b_j + \dots + a_{k+1} b_{k+1}\\
+            &= P_k + a_{k+1} b_{k+1}\\
+            &\leq S_k + a_{k+1} b_{k+1}\\
+            &= S_{k+1}\\
+            &= S_n
+    \end{align*}
+    For the equality to hold, $(a_{k+1} - a_i)(b_{k+1} - b_j) \geq 0$ should hold for any $i, j$.
+    If $a_i$'s are strictly increasing, $b_{k+1} - b_j = 0$ for any $j$.
+    Thus, equality holds iff all $b_i$'s are equal.
+
+    By induction principle, $S_n \geq P_n$ for all $n \in \mathbb N$, where its equality holds iff all $b_i$'s are equal when $a_i$'s are strictly increasing.
+
+    Now to show $P_n \geq R_n$, define new sequences $b'_i = -b_i$ and $c'_i = -c_i$.
+    Sorting $b'_i$ and $c'_i$ leads to a reverse of $b_i$ and $c_i$, respectively.
+    Let
+    \begin{align*}
+        S'_n &= a_1 b'_n + \dots + a_n b'_1\\
+             &= a_1 (-b_n) + \dots + a_n (-b_1)\\
+             &= -(a_1 b_n + \dots + a_n b_1)\\
+             &= -R_n\\
+        P'_n &= a_1 c'_1 + \dots + a_n c'_n\\
+             &= a_1 (-c_1) + \dots + a_n (-c_n)\\
+             &= -(a_1 c_1 + \dots + a_n c_n)\\
+             &= -P_n
+    \end{align*}
+    Since $S'_n \geq P'_n$, it follows that $-R_n \geq -P_n$.
+    Therefore, $P_n \geq R_n$, and its equality holds iff $b_i$'s are same when $a_i$'s are strictly increasing.
+\end{proof}
+
+\begin{cor} \label{cor:rearrange_1}
+    Let $a_1, a_2, \dots, a_n$ be real numbers and $c_1, c_2, \dots, c_n$ be its permutation.
+    Then
+    \[
+        a_1^2 + a_2^2 + \dots + a_n^2 \geq a_1 c_1 + a_2 c_2 + \dots + a_n c_n
+    \]
+\end{cor}
+\begin{proof}
+    Let $\alpha_i$ be a sorted sequence of $a_i$ in an ascending order.
+    Then $\sum a_i a_i = \sum \alpha_i \alpha_i$ is a sorted sum whereas $\sum a_i c_i = \sum \alpha_i c'_i$ is a permuted sum, where $a_i c_i = \alpha_j c'_j$ for some $j \in [n]$.
+    From Theorem~\ref{thm:rearrange}, $\sum a_i^2 \geq \sum a_i c_i$.
+\end{proof}
+
+\begin{cor} \label{cor:rearrange_2}
+    Let $a_1, a_2, \dots, a_n$ be positive real numbers and $c_1, c_2, \dots, c_n$ be its permutation. 
+    Then
+    \[
+        \frac{c_1}{a_1} + \frac{c_2}{a_2} + \dots + \frac{c_n}{a_n} \geq n.
+    \]
+\end{cor}
+\begin{proof}
+    Let $\alpha_i$ be a sorted sequence of $a_i$ in an ascending order.
+    Note that $\frac{1}{\alpha_i}$ is in a descending order.
+    Then $\sum \frac{c_i}{a_i} = \sum \frac{1}{a_i} \cdot c_i = \sum \frac{1}{\alpha_i} \cdot c'_i$ is a permuted sum whereas $n = \sum \frac{1}{\alpha_i} \cdot \alpha_i$ is a reveresed sum, where $\frac{1}{a_i} \cdot c_i = \frac{1}{\alpha_j} \cdot c'_j$ for some $j \in [n]$.
+    From Theorem~\ref{thm:rearrange}, $\sum \frac{c_i}{a_i} \geq n$.
+\end{proof}
+
+\begin{thm}[Arithmetic Mean--Geometric Mean Inequality] \label{thm:am-gm}
+    Let $x_1, x_2, \dots, x_n$ be positive real numbers.
+    Then
+    \[
+        \frac{x_1 + x_2 + \dots + x_n}{n} \geq \sqrt[n]{x_1 x_2 \dots x_n}.
+    \]
+    Equality holds iff $x_1 = x_2 = \dots = x_n$.
+\end{thm}
+\begin{proof}
+    Let $G = \sqrt[n]{x_1 x_2 \dots x_n}$.
+    Define a sequence $\alpha_i = \frac{x_1 \dots x_i}{G^i}$.
+    From Corollary~\ref{cor:rearrange_2}, the following holds:
+    \[
+        \sum_{i=1}^n \frac{\alpha_i}{\alpha_{i-1}} \geq n,
+    \]
+    where $\alpha_0 = \alpha_n = \frac{x_1 x_2 \dots x_n}{G^n} = 1$.
+    \begin{align*}
+        \sum_{i=1}^n \frac{\alpha_i}{\alpha_{i-1}} &= \sum_{i=1}^n \frac{\frac{x_1 \dots x_i}{G^i}}{\frac{x_1 \dots x_{i-1}}{G^{i-1}}}\\
+                                                   &= \sum_{i=1}^n \frac{x_i}{G}
+    \end{align*}
+    Therefore, $\sum \frac{x_i}{G} \geq n$, which implies $\frac{x_1 + x_2 + \dots + x_n}{n} \geq G = \sqrt[n]{x_1 x_2 \dots x_n}$
+\end{proof}
+
+\begin{prop}[Geometric Mean--Harmonic Mean Inequality] \label{prop:gm-hm}
+    Let $x_1, x_2, \dots, x_n$ be positive real numbers.
+    Then
+    \[
+        \sqrt[n]{x_1 x_2 \dots x_n} \geq \frac{n}{\frac{1}{x_1} + \frac{1}{x_2} + \dots + \frac{1}{x_n}}.
+    \]
+\end{prop}
+\begin{proof}
+    Substituting $\frac 1 x_i$ to $x_i$ in Theorem~\ref{thm:am-gm} leads to the desired inequality.
+\end{proof}
+
+\begin{prop}[Root Mean Square--Arithmetic Mean Inequality] \label{prop:rms-am}
+    Let $x_1, x_2, \dots, x_n$ be positive real numbers.
+    Then
+    \[
+        \sqrt{\frac{x_1^2 + x_2^2 + \dots x_n^2}{n}} \geq \frac{x_1 + x_2 + \dots + x_n}{n}.
+    \]
+\end{prop}
+\begin{proof}
+    Let 
+    \begin{align*}
+        S &= \sum_{i=1}^n x_i^2\\
+        P_k &= \sum_{i=1}^{n} x_i x_{i+k},
+    \end{align*}
+    where $x_{i+k} = x_{i+k-n}$ if $i + k > n$, and $k \in [n-1]$.
+    Now expand $(x_1 + x_2 + \dots + x_n)^2$.
+    \begin{align*}
+        (x_1 + x_2 + \dots + x_n)^2 &= x_1^2 + x_2^2 + \dots + x_n^2\\
+                                    &\quad + x_1 x_2 + x_2 x_3 + \dots + x_n x_1\\
+                                    &\quad + x_1 x_3 + x_2 x_4 + \dots + x_n x_2\\
+                                    &\quad + \cdots\\
+                                    &\quad + x_1 x_{1+k} + x_2 x_{2+k} + \dots + x_n x_{n+k}\\
+                                    &\quad + \cdots\\
+                                    &\quad + x_1 x_n + x_2 x_1 + \dots + x_n x_{n-1}\\
+                                    &= S + \sum_{i=1}^{n-1} P_i\\
+                                    &\leq S + \sum_{i=1}^{n-1} S\\
+                                    &= nS\\
+                                    &= n(x_1^2 + x_2^2 + \dots + x_n^2)
+    \end{align*}
+    Thus, $\left( \sum x_i \right)^2 \leq n \sum x_i^2$.
+    \begin{align*}
+        \left( \sum x_i\right)^2 \leq n \left( \sum x_i^2\right) &\Leftrightarrow \frac{\left( \sum x_i \right)^2}{n^2} \leq \frac{\sum x_i^2}{n}\\
+                                                                 &\Leftrightarrow \frac{\sum x_i}{n} \leq \sqrt{\frac{\sum x_i^2}{n}}
+    \end{align*}
+    Therefore, $\sqrt{\frac{x_1^2 + x_2^2 + \dots + x_n^2}{n}} \geq \frac{x_1 + x_2 + \dots + x_n}{n}$.
+\end{proof}
+
+\begin{thm}[Chebyshev's Inequality] \label{thm:chebyshev}
+    Let $x_1 \leq x_2 \leq x_n$ and $y_1 \leq y_2 \leq \dots \leq y_n$ be any real numbers.
+    Then
+    \begin{align*}
+        x_1 y_1 + x_2 y_2 + \dots + x_n y_n &\geq \frac{(x_1 + x_2 + \dots + x_n)(y_1 + y_2 + \dots + y_n)}{n}\\
+                                            &\geq x_1 y_n + x_2 y_{n-1} + \dots + x_n y_1.
+    \end{align*}
+\end{thm}
+\begin{proof}
+    The first part of the inequality is a sorted sum, whereas the last part of the inequality is a reversed sum.
+    The one in the middle is an average of a sorted sum, a reversed sum, and permuted sums.
+\end{proof}
+
+\subsection{Cauchy-Schwarz Inequality}
+\begin{thm}[Cauchy-Schwarz Inequality] \label{thm:cauchy}
+    Let $a_1, a_2, \dots, a_n$ and $b_1, b_2, \dots, b_n$ be two sequences of real numbers, then
+    \[
+        \left( \sum_{i=1}^n a_i^2 \right) \left( \sum_{i=1}^n b_i^2 \right) \geq \left( \sum_{i=1}^n a_i b_i \right)^2.
+    \]
+    with equality iff the sequences $a_1, a_2, \dots, a_n$ and $b_1, b_2, \dots, b_n$ are proportional, i.e., there is a constant $\lambda$ such that $a_i = \lambda b_i$ for each $i = 1, \dots, n$.
+\end{thm}
+\begin{proof}
+    Let $c_{ij} = a_i b_j$.
+    Then, 
+    \begin{align*}
+        \left( \sum_{i=1}^n a_i^2\right) \left( \sum_{i=1}^n b_i^2\right) &= a_1^2 b_1^2 + a_1^2 b_2^2 + \dots + a_1^2 b_n^2\\
+                                                                          &\quad + a_2^2 b_1^2 + a_2^2 b_2^2 + \dots + a_2^2 b_n^2\\
+                                                                          &\quad + \cdots\\
+                                                                          &\quad + a_n^2 b_1^2 + a_n^2 b_2^2 + \dots + a_n^2 b_n^2\\
+                                                                          &= c_{11}^2 + c_{12}^2 + \dots + c_{1n}^2\\
+                                                                          &\quad + c_{21}^2 + c_{22}^2 + \dots + c_{2n}^2\\
+                                                                          &\quad + \cdots\\
+                                                                          &\quad + c_{n1}^2 + c_{n2}^2 + \dots + c_{nn}^2
+    \end{align*}
+    Thus the left side of the inequality is a sorted sum.
+    Note that $c_{ij} c_{kl} = (a_i b_j)(a_k b_l) = (a_i b_l)(a_k b_j) = c_{il} c_{kj}$.
+
+    \begin{align*}
+        \left( \sum_{i=1}^n a_i b_i\right)^2 &= (a_1 b_1)^2 + (a_1 b_1)(a_2 b_2) + \dots + (a_1 b_1)(a_n b_n)\\
+                                             &\quad + (a_2 b_2)(a_1 b_1) + (a_2 b_2)^2 + \dots + (a_2 b_2)(a_n b_n)\\
+                                             &\quad + \cdots\\
+                                             &\quad + (a_n b_n)(a_1 b_1) + (a_n b_n)(a_2 b_2) + \dots + (a_n b_n)^2\\
+                                             &= c_{11}^2 + c_{11} c_{22} + \dots + c_{11} c_{nn}\\
+                                             &\quad + c_{22} c_{11} + c_{22}^2 + \dots + c_{22} c_{nn}\\
+                                             &\quad + \cdots \\
+                                             &\quad + c_{nn} c_{11} + c_{nn} c_{22} + \dots + c_{nn}^2\\
+                                             &= c_{11} c_{11} + c_{12} c_{22} + \dots + c_{1n} c_{n1}\\
+                                             &\quad + c_{21} c_{12} + c_{22} c_{22} + \dots + c_{2n} c_{n2}\\
+                                             &\quad + \cdots\\
+                                             &\quad + c_{n1} c_{1n} + c_{n2} c_{2n} + \dots + c_{nn} c_{nn}
+    \end{align*}
+    Thus the right side of the inequality is a permuted sum.
+    From Theorem~\ref{thm:rearrange}, the left side--the sorted sum--is greater or equal to the right side--the permuted sum.
+\end{proof}
+
+\subsection{Exercises for Chapter 3}
+\begin{exercise}
+    Find the minimum of 
+    \[
+        \frac{\sin^3 x}{\cos x} + \frac{\cos^3 x}{\sin x},\ 0 < x < \frac \pi 2.
+    \]
+\end{exercise}
+\begin{sol}
+    From Theorem~\ref{thm:am-gm},
+    \[
+        \frac{\sin^3 x}{\cos x} + \frac{\cos^3 x}{\sin x} \geq 2 \sqrt{\frac{\sin^3 x}{\cos x} \frac{\cos^3 x}{\sin x}} = 2 \sin x \cos x
+    \]
+    Since equality holds iff $\frac{\sin^3 x}{\cos x} = \frac{\cos^3 x}{\sin x}$, $\sin x = \cos x$ as $x \in \left(0, \frac \pi 2\right)$.
+    Thus, $x = \frac \pi 4$ is the value of $x$ at the minimum of the given expression.
+    Therefore, the minimum is $2 \sin \frac \pi 4 \sin \frac \pi 4 = 2 \cdot \frac{1}{\sqrt 2} \cdot \frac{1}{\sqrt 2} = 1$.
+\end{sol}
+
+\begin{exercise}
+    Prove that
+    \begin{enumerate}
+        \item $a^2 + b^2 + c^2 \geq ab + bc + ca$
+        \item $a^n + b^n + c^n \geq a b^{n-1} + b c^{n-1} + c a^{n-1}$
+    \end{enumerate}
+\end{exercise}
+\begin{proof}
+    1. Use Theorem~\ref{thm:rearrange} for $a, b, c$ and $a, b, c$.\\
+    2. Use Theorem~\ref{thm:rearrange} for $a, b, c$ and $a^{n-1}, b^{n-1}, c^{n-1}$.
+\end{proof}
+
+\begin{exercise}
+    Prove that
+    \[
+        \frac{1}{a^2} + \frac{1}{b^2} + \frac{1}{c^2} \geq \frac{a + b + c}{abc}.
+    \]
+\end{exercise}
+\begin{proof}
+    Note that $\frac{a+b+c}{abc} = \frac{1}{bc} + \frac{1}{ca} + \frac{1}{ab}$.
+    Use Theorem~\ref{thm:rearrange} for $\frac 1 a, \frac 1 b, \frac 1 c$ and $\frac 1 a, \frac 1 b, \frac 1 c$.
+\end{proof}
+
+\begin{exercise}
+    Prove that
+    \[
+        \frac{a^2}{b^2} + \frac{b^2}{c^2} + \frac{c^2}{a^2} \geq \frac b a + \frac c b + \frac a c .
+    \]
+\end{exercise}
+\begin{proof}
+    Note that $\frac b a + \frac c b + \frac a c = \frac b c \frac c a + \frac c a \frac a b + \frac a b \frac b c$.
+    Use Theorem~\ref{thm:rearrange} for $\frac b a, \frac c b, \frac a c$ and $\frac b a, \frac c b, \frac a c$.
+\end{proof}
+
+\begin{exercise}
+    Prove that
+    \[
+        \frac{a^2}{b} + \frac{b^2}{c} + \frac{c^2}{a} \geq a + b + c.
+    \]
+\end{exercise}
+\begin{proof}
+    Note that $\frac{a^2}{b} + \frac{b^2}{c} + \frac{c^2}{a} = a \cdot \frac a b + b \cdot \frac b c + c \cdot \frac c a$.
+    Use Theorem~\ref{thm:rearrange} for $a, b, c$ and $\frac a b, \frac b c, \frac c a$.
+\end{proof}
+
+\begin{exercise}
+    Prove that
+    \[
+        \frac{a^n}{b + c} + \frac{b^n}{c + a} + \frac{c^n}{a + b} \geq \frac{a^{n-1} + b^{n-1} + c^{n-1}}{2}.
+    \]
+\end{exercise}
+\begin{proof}[Proof 1]
+    Without loss of generality, suppose $a \geq b \geq c$.
+    From Theorem~\ref{thm:rearrange} and Theorem~\ref{thm:chebyshev}, 
+    \begin{align*}
+        a^{n} \cdot \frac{1}{b+c} + b^{n} \cdot \frac{1}{c+a} + c^{n} \cdot \frac{1}{a+b} &\geq a^n \cdot \frac{1}{c+a} + b^n \cdot \frac{1}{a+b} + c^n \cdot \frac{1}{b+c}\\
+                                                                                          &= a^{n-1} \cdot \frac{a}{c+a} + b^{n-1} \cdot \frac{b}{a+b} + c^{n-1} \cdot \frac{c}{b+c} \\
+                                                                                          &\geq \frac 1 3 \left(a^{n-1} + b^{n-1} + c^{n-1}\right) \left(\frac{a}{c+a} + \frac{b}{a+b} + \frac{c}{b+c}\right)\\
+        a^{n} \cdot \frac{1}{b+c} + b^{n} \cdot \frac{1}{c+a} + c^{n} \cdot \frac{1}{a+b} &\geq a^n \cdot \frac{1}{a+b} + b^n \cdot \frac{1}{b+c} + c^n \cdot \frac{1}{c+a}\\
+                                                                                          &= a^{n-1} \cdot \frac{a}{a+b} + b^{n-1} \cdot \frac{b}{b+c} + c^{n-1} \cdot \frac{c}{c+a} \\
+                                                                                          &\geq \frac 1 3 \left(a^{n-1} + b^{n-1} + c^{n-1}\right) \left(\frac{a}{a+b} + \frac{b}{b+c} + \frac{c}{c+a}\right).
+    \end{align*}
+    Thus, we obtain
+    \begin{align*}
+        a^{n} \cdot \frac{1}{b+c} + b^{n} \cdot \frac{1}{c+a} + c^{n} \cdot \frac{1}{a+b} &\geq \frac 1 2 \cdot \frac 1 3 \left(a^{n-1} + b^{n-1} + c^{n-1}\right) \left[\left(\frac{a}{c+a} + \frac{b}{a+b} + \frac{c}{b+c}\right)\right. \\
+                                                                                          &\quad \left.+ \left(\frac{a}{a+b} + \frac{b}{b+c} + \frac{c}{c+a}\right)\right]\\
+                                                                                          &= \frac 1 2 \cdot \frac 1 3 \left(a^{n-1} + b^{n-1} + c^{n-1}\right) \cdot 3\\
+                                                                                          &= \frac 1 2 \left(a^{n-1} + b^{n-1} + c^{n-1}\right).
+    \end{align*}
+\end{proof}
+\begin{proof}[Proof 2]
+    Without loss of generality, suppose $a \geq b \geq c$.
+    From Theorem~\ref{thm:chebyshev},
+    \[
+        \frac{a^n}{b + c} + \frac{b^n}{c + a} + \frac{c^n}{a + b} \geq \frac 1 3 \left( a^{n-1} + b^{n-1} + c^{n-1}\right) \left(\frac{a}{b + c} + \frac{b}{c + a} + \frac{c}{a + b}\right).
+    \]
+    Note that
+    \begin{align*}
+        \frac{a}{b + c} + \frac{b}{c + a} + \frac{c}{a + b} &\geq \frac 1 3 (a + b + c) \left(\frac{1}{b + c} + \frac{1}{c + a} + \frac{1}{a + b}\right) &\text{by Theorem~\ref{thm:chebyshev}}\\
+                                                            &\geq \frac 1 3 \left( \frac{a}{b + c} + \frac{b}{c + a} + \frac{c}{a + b} + 3\right)
+    \end{align*}
+    Hence 
+    \[
+        \frac{a}{b + c} + \frac{b}{c + a} + \frac{c}{a + b} \geq \frac 3 2.
+    \]
+    Therefore,
+    \[
+        \frac{a^n}{b + c} + \frac{b^n}{c + a} + \frac{c^n}{a + b} \geq \frac 1 2 \left( a^{n-1} + b^{n-1} + c^{n-1}\right)
+    \]
+\end{proof}
+
+\begin{exercise}
+    Prove that if $a, b, c$ are nonnegative numbers, then
+    \[
+        a^a b^b c^c \geq (abc)^\frac{a + b + c}{3}.
+    \]
+\end{exercise}
+\begin{proof}
+    Take $\log$ on each side of the inequality:
+    \[
+        a \log a + b \log b + c \log c \geq \frac{a + b + c}{3} ( \log a + \log b + \log c).
+    \]
+    This a direct result of Theorem~\ref{thm:chebyshev}.
+\end{proof}
+\end{document}

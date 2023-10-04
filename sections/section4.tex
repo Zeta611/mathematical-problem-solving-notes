@@ -1,0 +1,522 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+\subsection{The Principle of Induction}
+\begin{defn} \label{def:n}
+    The set $\mathbb N$ of \textsf{natural numbers} is the intersection of all sets $S \subset \mathbb R$ that have following properties:
+    \begin{enumerate}
+        \item $1 \in S$
+        \item $x \in S \Rightarrow x + 1 \in S$.
+    \end{enumerate}
+\end{defn}
+
+\begin{thm}[Principle of Induction] \label{thm:induction}
+    For each natural number $n$, let $P(n)$ be a mathematical statement.
+    Then for each $n \in \mathbb N$ the statement $P(n)$ is true, if the following properties hold:
+    \begin{enumerate}
+        \item $P(1)$ is true.
+        \item For $k \in \mathbb N$, if $P(k)$ is true, then $P(k+1)$ is true.
+    \end{enumerate}
+\end{thm}
+
+Proving property 1 of Theorem~\ref{thm:induction} is the \textsf{basis step}, and proving property 2 is the \textsf{induction step}.
+
+\begin{prop}
+    For $n \in \mathbb N$, the formula $1 + 2 + \dots + n = \frac{n(n + 1)}{2}$ holds.
+\end{prop}
+
+\begin{prop}
+    If $n \in \mathbb N$ and $q \geq 2$, then $n < q^n$.
+\end{prop}
+\begin{proof}
+    We use induction on $n$.
+    For the case $n = 1$, $1 < 2 \leq q$, so the statement holds.
+
+    Suppose now as an induction hypothesis that $k < q^k$ for some $k \in \mathbb N$ where $q \geq 2$.
+    \begin{align*}
+        k + 1 < 2k &\Rightarrow k + 1 < qk\\
+                   &\Rightarrow k + 1 < q \cdot q^k\\
+                   &\Rightarrow k + 1 < q^{k + 1}
+    \end{align*}
+    Hence, by the induction principle (Theorem~\ref{thm:induction}), the given statement is true for all $n \in \mathbb N$.
+\end{proof}
+
+\begin{prop} \label{prop:prod}
+    If $x_1, x_2, \dots, x_n$ are numbers in the interval $[0, 1]$, then
+    \[
+        \prod_{i = 1}^{n} (1 - x_i) \geq 1 - \sum_{i = 1}^n x_i.
+    \]
+\end{prop}
+\begin{proof}
+    We use induction on $n$.
+    For the case $n = 1$, the given inequality holds since $1 - x_1 \geq 1- x_1$.
+
+    Suppose now as an induction hypothesis that $\prod_{i = 1}^k (1 - x_i) \geq 1 - \sum_{i = 1}^k x_i$ for some $k \in \mathbb N$ where $k \geq 2$.
+    Let $P = \prod_{i = 1}^k (1 - x_i)$ and $S = 1 - \sum_{i = 1}^k x_i$.
+    Since $P$ is a product of numbers in $[0, 1]$, $P \in [0, 1]$.
+    Choose any $x_{k+1}$ from $[0, 1]$.
+    \begin{align*}
+        P \leq 1 &\Rightarrow x_{k+1} P \leq x_{k+1}\\
+                 &\Rightarrow -x_{k+1} P \geq -x_{k+1}
+    \end{align*}
+    From the induction hypothesis $P \geq S$,
+    \begin{align*}
+        -x_{k+1} P \geq -x_{k+1} \wedge P \geq S &\Rightarrow P - x_{k+1} P \geq S - x_{k+1}\\
+                                                 &\Rightarrow P(1 - x_{k+1}) \geq S - x_{k+1}\\
+                                                 &\Rightarrow \prod_{i = 1}^{k+1} x_i \geq 1 - \sum_{i = 1}^{k+1} x_i.
+    \end{align*}
+    Hence, by the induction principle, the given inequality is true for all $n \in \mathbb N$.
+\end{proof}
+
+\begin{cor}
+    If $0 \leq a \leq 1$ and $n \in \mathbb N$, then $(1 - a)^n \geq 1 - na$.
+\end{cor}
+\begin{proof}
+    This is the case when $x_1 = x_2 = \dots = x_n = a$ in Theorem~\ref{prop:prod}.
+\end{proof}
+
+\begin{prop} \label{prop:sq_pow}
+    If $n \in \mathbb N$ and $n \geq 4$, then $n^2 \leq 2^n$.
+\end{prop}
+\begin{proof}
+    We use induction on $n$.
+    For the case $n = 4$, the given inequality holds since $4^2 = 16 \leq 2^4 = 16$.
+
+    Suppose now as an induction hypothesis that $k^2 \leq 2^k$ for some $k \in \mathbb N$ where $k \geq 5$.
+    \begin{align*}
+        k \geq 5 &\Rightarrow k - 1 \geq 4\\
+                 &\Rightarrow (k - 1)^2 \geq 16\\
+                 &\Rightarrow k^2 - 2k + 1 \geq 16\\
+                 &\Rightarrow k^2 - 2k - 1 \geq 14\\
+                 &\Rightarrow k^2 - 2k - 1 \geq 0\\
+                 &\Rightarrow k^2 \geq 2k + 1\\
+                 &\Rightarrow 2k^2 \geq k^2 + 2k + 1\\
+                 &\Rightarrow 2k^2 \geq (k + 1)^2
+    \end{align*}
+    Since $k^2 \leq 2^k$ from the induction hypothesis, we have the following:
+    \begin{align*}
+        k^2 \leq 2^k \wedge 2k^2 \geq (k + 1)^2 &\Rightarrow 2 \cdot 2^k \geq (k + 1)^2\\
+                                                &\Rightarrow 2^{k + 1} \geq (k + 1)^2.
+    \end{align*}
+    Hence, by the induction principle, the given inequality is true for all $n \in \mathbb N\backslash \{1, 2, 3\}$.
+\end{proof}
+
+\subsection{Applications}
+\begin{lem} \label{lem:factor}
+    If $f$ is a polynomial of degree $d$, then $a$ is a zero of $f$ iff $f(x) = (x - a) h(x)$ for some polynomial $h$ of degree $d - 1$.
+\end{lem}
+\begin{proof}
+    We use strong induction on $d$.
+    For the case $d = 1$, $f(x) = c_1 x + c_0 = \left(x - \frac{c_0}{c_1}\right) \cdot c_1$, and as $x = \frac{c_0}{c_1}$ is its zero, the given statement holds.
+
+    Suppose now as an induction hypothesis that a polynomial $f$ with a degree $i$, $a$ is a zero of $f$ iff $f(x) = (x-a) h(x)$ for some polynomial $h$ of degree $i-1$ for all positive integer $i$ less or equal to $k \geq 2$.
+    Now consider a polynomial $g$ with a degree $k+1$ which has $a$ as its zero.
+    We can represent $g(x) = \sum_{i = 0}^{k+1} b_i x^i$.
+    Then the following holds:
+    \begin{align*}
+        g(x) = \sum_{i = 0}^{k+1} b_i x^i &\Leftrightarrow g(x) - g(a) = \sum_{i=0}^{k+1} b_i x^i -  \sum_{i=0}^{k+1} b_i a^i\\
+                                          &\Leftrightarrow g(x) - 0 = \sum^{k+1}_{i=0} b_i (x^i - a^i).
+    \end{align*}
+    Since $x^i - a^i$ is a polynomial of degree less or equal to $k$, the induction hypothesis holds.
+    $x = a$ is a zero, it can be factorized as $x^i - a^i = (x-a) h_i(x)$ where $h_i$ is a polynomial of degree $i-1$.
+    Thus we have
+    \begin{align*}
+        g(x) = \sum^{k+1}_{i=0} b_i (x - a)h_i(x) &\Leftrightarrow g(x) = (x - a) \sum^{k+1}_{i=0} h_i(x)\\
+                                                  &\Leftrightarrow g(x) = (x - a) r(x)
+    \end{align*}
+    where $r$ is a polynomial of degree $(k+1) - 1 = k$.
+    Hence the given statement holds for all $d \in \mathbb N$ by the induction principle.
+\end{proof}
+
+\begin{thm}
+    Every polynomial of degree $d$ has at most $d$ zeros.
+\end{thm}
+\begin{proof}
+    For the sake of contradiction, suppose there are more than $d$ zeros for a polynomial of degree $d$.
+    Let the zeros be $a_1, a_2, \dots, a_d, a_{d+1}, \dots$.
+    From Lemma~\ref{lem:factor}, $f(x) = (x - a_1)(x - a_2) \dots (x - a_d) (x - a_{d+1}) h(x)$.
+    However, the right hand side results in a polynomial of degree greater than or equal to $d+1$. $\lightning$
+
+    Therefore, every polynomial of degree $d$ has at most $d$ zeros.
+\end{proof}
+
+\begin{prob}[The Handshake Problem]
+    Consider $n$ married couples at a party.
+    Suppose that no person shakes hands with his or her spouse, and total $2n - 1$ people other than the host shake hands with different numbers of people.
+    With how many people does the hostess shake hands?
+\end{prob}
+\begin{sol}
+    We want to show that the spouse of the one with the maximum handshakes has the minimum handshake.
+    $2n - 1$ people should all have distinct numbers of handshakes, and the only possible numbers of handshakes are $0, 1, \dots, 2n - 2$.
+    The one with two handshakes--the maximum handshakes--must shake hand with everyone except his/her spouse.
+    Now, everyone except his/her spouse has at least one handshake.
+    Therefore, the one with no handshake must be the spouse of the one with the maximum handshakes.
+
+    We now show that the number of the handshakes the hostess has is $n - 1$.
+    We use strong induction on $n$.
+    For the case $n = 2$, it is trivial that the hostess has one handshake, which follows from the argument above.
+
+    Suppose now as an induction hypothesis that the hostness has $i - 1$ handshakes when there are $i$ couples for all positive integer $i \leq k$ where $k \geq 2$.
+    Now consider the case of $k + 1$ couples.
+    The one with the maximum handshake, $A$, must have handshakes with everyone except his/her spouse $A^*$, and his/her spouse has no handshake as shown above.
+    Remove $A$ and $A^*$.
+    There are $k$ couples, all with one handshake removed attributed from $A$.
+    Removing $A^*$ does not affect other people's number of handshakes.
+    This is exactly the case of $k$ couples, where the hostess has $k - 1$ handshakes.
+    She previously had one more handshake from $A$.
+    Thus, the hostess has $k = (k + 1) - 1$ handshakes in the case of $k + 1$ couples.
+    Therefore, the hostess has $n - 1$ handshakes when there are $n$ couples for all $n \in \mathbb N$ by the induction principle.
+\end{sol}
+
+\begin{prob} [The L-Tiling Problem]
+    There are a large number of L-shaped tiles as illustrated on page 31 of the textbook.
+    Is it possible to form the large similar region on the right with non-overlapping copies of this tile?
+\end{prob}
+\begin{sol}
+    It is possible.
+    Classify the large region by the length of its edge in modulo 3.
+    It is simple to come up with a band that surrounds the edge of the region with a thickness of two.
+    Recursively construct the region.
+\end{sol}
+
+\subsection{Strong Induction}
+Sometimes a proof of $P(k)$ in the induction step needs the hypothesis that $P(i)$ is true for all $i < k$ (which is already used above).
+By assuming more in the induction hypothesis, we make the condition statement in the induction step weaker.
+Nevertheless, this weaker implication suffices to complete the proof, so we call the method \textsf{strong induction}.
+
+\begin{thm} [Strong Induction Principle] \label{thm:stronginduction}
+    Let $\{P(n) | n \in \mathbb{N} \}$ be a sequence of mathematical statements.
+    If properties 1 and 2 below hold, the for every $n \in \mathbb N$, $P(n)$ is true.
+    \begin{enumerate}
+        \item $P(1)$ is true.
+        \item For $k \geq 2$, if $P(i)$ is true for all $i < k$, then $P(k)$ is true.
+    \end{enumerate}
+\end{thm}
+\begin{proof}
+    Let the statement $Q(n)$ be ``$P(i)$ hold for all $i \leq n$.''
+    From property 1, $Q(1)$ is true.
+    Then, if the property 2 holds, it can be said that if $Q(k-1)$ holds, then $Q(k)$ holds.
+    From the principle of induction, $Q(n)$ is true for all $n \in \mathbb N$.
+    Therefore, $P(n)$ is true for all $n \in \mathbb N$.
+\end{proof}
+
+\begin{prob}
+    Suppose that $n$ coins are arranged in a row.
+    We remove head-up coins, one by one.
+    Each time we remove a coin, we must flip the coins still present in the (at most) two positions surrounding it.
+    For which arrangements of heads and tails can we remove all the coin?
+    For example, $THTHT$ fails, but $THHHT$ succeeds.
+    Using $\circ$ to denote gaps due to removed coins, we remove $THHHT$ via
+    \[
+        THHHT \rightarrow H \circ THT \rightarrow \circ \circ THT \rightarrow \circ \circ H \circ H \rightarrow \circ \circ \circ \circ H \rightarrow \circ \circ \circ \circ \circ.
+    \]
+\end{prob}
+\begin{sol}
+    From observation, we can find out an arrangement with odd numbers of head-up coins can always be removed, whereas the one the even numbers of head-up coins cannot be removed.
+    We show that the observation above is true.
+    We use strong induction on $n$, where $n$ is the length of an arrangement.
+    Case $n=1$ is trivially true.
+
+    Suppose as an induction hypothesis that all arrangements of length $k$ or smaller is removable iff there are odd numbers of $H$'s for some $k \in \mathbb N$.
+    Consider an arrangement of length $k + 1$.\\
+    \noindent \textbf{Case 1}: There are no $H$'s in the middle of the arrangement.\\
+    \indent The arrangement must be either $HT\dots TT$, $TT\dots TH$, or $HT \dots TH$.
+    Only consider $HT\dots TT$ and $HT \dots TH$ without loss of generality.
+
+    \noindent \textbf{Case 1-1}: $HT\dots TT$\\
+    \indent Only choice is to remove the $H$ at the start of the arrangement.
+    Removing it results in $\circ HT\dots TT$ with a $k$-long arrangement not regarding $\circ$.
+    From the induction hypothesis, it is removable.
+
+    \noindent \textbf{Case 1-2}: $HT\dots TH$\\
+    \indent Removing either the first or the last $H$ results in the identical type--$\circ HT\-\dots\-TH$ or $HT\-\dots\-TH\circ$.
+    From the induction hypothesis, it is unremovable.
+    \\
+    \\
+    \noindent \textbf{Case 2}: There are $H$'s in the middle of the arrangement.\\
+    \noindent \textbf{Case 2-1}: There is an odd number of $H$'s\\
+    \indent Find the first $H$ that occurs in an arrangement.
+    There are two possible cases:\\
+    \noindent \textbf{Case 2-1-1}: $T\dots THT\dots$\\
+    \indent When we remove the first $H$, the arrangement becomes $T\dots T H \circ H \dots$, where the first chunk contains 1 (odd) $H$ and the latter chunk contains odd numbers of $H$'s.
+    From the induction hypothesis, the two chunks are removable.\\
+    \noindent \textbf{Case 2-1-1}: $T\dots THH\dots$\\
+    \indent When we remove the first $H$, the arrangement becomes $T \dots TH \circ T \dots$.
+    Again, both chunks contains odd numbers of $H$'s.
+    From the induction hypothesis, the two chunks are removable.\\
+
+    \noindent \textbf{Case 2-2}: There is an even numbers of $H$'s\\
+    \indent There are three possible scenarios to remove $H$'s:\\
+    \noindent \textbf{Case 2-2-1}: Remove $H$ in between $H$'s\\
+    \indent The two chunks each contains even and odd numbers of $H$'s, which makes it impossible to remove.\\
+    \noindent \textbf{Case 2-2-2}: Remove $H$ after $T$, but not between $T$'s\\
+    \indent It is impossible to remove.\\
+    \noindent \textbf{Case 2-2-2}: Remove $H$ between $T$'s\\
+    \indent It is impossible to remove.
+
+    Therefore, by the induction principle, an arrangement is removable iff it contains an odd number of $H$'s.
+\end{sol}
+
+\begin{prop} [Well-Ordering Property]
+    Every nonempty subset of $\mathbb N$ has a least element.
+\end{prop}
+\begin{proof}
+    The given statement is equivalent to ``Every subset of $\mathbb N$ containing any element $n \in \mathbb N$ has a least element.''
+    We show this using strong induction on $n$.
+    The case $n = 1$ holds as 1 is the least element of $\mathbb N$.
+
+    Suppose now as an induction hypothesis that a subset with an element $i$ has a least element for all $i \leq k$ such that $k \geq 2$.
+    Consider a subset with an element $k + 1$.
+    If the subset has a smaller element than $k + 1$, it must contain at least one of $1, 2, \dots, k$.
+    From the induction hypothesis, the subset has a least element.
+    If not, $k + 1$ is the least element.
+    Hence, from the induction principle, the given statement is true.
+\end{proof}
+
+Suppose that $S \subset \mathbb N$.
+By the well-ordering property, $S^\mathsf{c}$ has a least element.
+Thus when $P(n)$ fails for some $n \in \mathbb N$, there is a least $n$ where it fails.
+This yields yet another approach to induction, called the \textsf{method of decent}.
+We can prove $P(n)$ for all $n \in \mathbb N$ by proving that there is no least $n$ where $P(n)$ fails.
+To do this, we suppose that $P(n)$ fails for some $n$ and show that $P(k)$ must fail for some $k$ less than $n$.
+The existence of $k$ implies that $n > 1$, and thus we have proved the contrapositive of property 2 from Theorem~\ref{thm:stronginduction}.
+
+\begin{thm}
+    $\sqrt 2$ is irrational.
+\end{thm}
+\begin{proof}
+    The proof using an argument, ``Assume $\sqrt 2 = \frac p q$ where $\frac p q$ is a reduced form,'' and showing that it contradicts the fact that $p$ and $q$ are relatively prime is well known.
+    We approach this in a slightly different manner, using the method of decent introduced above.
+
+    For the sake of contradiction, suppose $\sqrt 2 = \frac m n$ where $m, n \in \mathbb{N}$.
+    The fraction needs not necessarily be reduced.
+    We see that $2 = \frac{m^2}{n^2}$, so $2n^2 = m^2$.
+    Then,
+    \begin{align*}
+        \frac m n &= \frac{m(m - n)}{n(m - n)}\\
+                  &= \frac{m^2 - mn}{mn - n^2}\\
+                  &= \frac{2n^2 - mn}{mn - n^2}\\
+                  &= \frac{2n - m}{m - n}
+    \end{align*}
+    Since $1 < \sqrt 2 = \frac m n < 2$, $n < m < 2n$.
+    Thus $0 < m - n < n$.
+    Now consider a set $S = \left\{ n \middle| \sqrt 2 = \frac m n \right\} \subset \mathbb N$.
+    We just showed that if $n \in S$, $m-n < n$ is also an element of $S$.
+    This contradicts the well-ordering principle. $\lightning$
+
+    Therefore, our assumption that $\sqrt 2$ can be represented as $\frac m n$ is wrong, leading to the fact that $\sqrt 2 \notin \mathbb Q$.
+    From Example~\ref{ex:exists_sq2}, $\sqrt 2 \in \mathbb R$, so $\sqrt 2$ is irrational.
+\end{proof}
+
+\begin{prop} \label{prop:oddpower}
+    Any $n \in \mathbb N$ can be expressed in exactly one way as the product of an odd number and a power of 2.
+\end{prop}
+\begin{proof}
+    The given statement can be rewritten:
+    \[
+        (\forall n \in \mathbb{N})(\exists ! k, m \in \mathbb N)\ n = 2^k (2m + 1).
+    \]
+
+    If $n$ is odd, it immediately follows that $k = 0$ and $m = \frac{n - 1}{2}$.
+    Consider the case $n$ is even.
+    Define a set $S = \left\{ a \middle | a = \frac{n}{2^k} \wedge a, k \in \mathbb{N}\right\}$.
+    Then $S \subset N$ from the definition.
+    From the well-ordering principle, the exists a least element $\alpha$ of $S$.
+    Let $l$ be a natural number such that $\frac{n}{2^l} = \alpha$.
+    Since $\alpha$ is the least element of $S$, $l$ is the maximum natural number such that $n$ is divisible by $2^l$.
+    The remainder of $n \div 2^l$ is thus an odd number, i.e. $2m + 1$.
+    Therefore, any even number can be written in the form of $2^k (2m + 1)$.
+
+    We now show the uniqueness of such expression.
+    Suppose $n = 2^k (2m + 1) = 2^{k'} (2m' + 1)$.
+    When $k = k'$, it immediately follows that $m = m'$.
+    When $k \neq k'$, let $k > k'$ without loss of generality.
+    Then $2^{k - k'} (2m + 1) = 2m' + 1$.
+    Since $k - k' > 0$, $2^{k - k'}$ is even, whereas $2m' + 1$ is odd. $\lightning$
+    Therefore, such expression is unique.
+\end{proof}
+
+\begin{prob} [Sums of Consecutive Positive Integers]
+    Prove that a natural number $n$ is a sum of consecutive smaller natural numbers iff $n$ is not a power of 2.
+\end{prob}
+\begin{proof}
+    We first show that if $n$ is a sum of consecutive smaller natural numbers, $n$ is not a power of 2.
+    Let $n = a + (a+1) + \dots + (a+k) = \frac{(2a + k)(k+1)}{2}$.
+    If $k$ is even, $k+1$ is not.
+    If $k$ is odd, $2a + k$ is not.
+    Therefore, we see that $(2a + k)(k + 1)$ is not a power of 2.
+
+    We now show that if $n$ is not a power of 2, it is a sum of consecutive smaller natural numbers.
+    From Proposition~\ref{prop:oddpower}, $n = 2^\alpha (2 \beta + 1)$, where $\beta \neq 0$.
+    There are two cases:\\
+    \noindent \textbf{Case 1}: $2^\alpha \geq \beta \geq 1$\\
+    \indent $2^\alpha - \beta \geq 0$, so
+    \begin{align*}
+        n &= 2^\alpha (2\beta + 1)\\
+          &= \frac{\left[2 \left(2^\alpha - \beta\right) + 2 \beta\right](2\beta + 1)}{2}\\
+          &= \left(2^\alpha - \beta\right) + \left(2^\alpha - \beta + 1\right) + \dots + \left(2^\alpha + \beta\right).
+    \end{align*}
+
+    \noindent \textbf{Case 2}: $\beta \geq 2^\alpha \geq 1$\\
+    \indent $\beta - 2^\alpha \geq 0$, so $\beta - 2^\alpha + 1 \geq 1$.
+    Then,
+    \begin{align*}
+        n &= 2^\alpha (2\beta + 1)\\
+          &= \frac{\left[2\left(\beta - 2^\alpha + 1\right) + \left(2^{\alpha+1} - 1\right)\right]\left[\left(2^{\alpha + 1} - 1\right) + 1\right]}{2}\\
+          &= \left(\beta - 2^\alpha + 1\right) + \left(\beta - 2^\alpha + 2\right) + \dots + \left(\beta + 2^\alpha\right).
+    \end{align*}
+
+    Therefore, the given statement holds.
+\end{proof}
+
+\subsection{Exercises for Chapter 4}
+\begin{exercise}
+    Prove that $n^3 + 20 > n^2 + 15n$ for all $n \in \mathbb N$.
+\end{exercise}
+\begin{proof}
+    We first show that $4k^2 + 18k + 1 \geq (k + 1)^2 + 15(k + 1)$ for $k \geq 3$.
+    Simplifying the inequality yields $\left( k + \frac 1 6 \right)^2 - \left(5 + \frac{1}{36}\right) \geq 0$.
+    The inequality is true for all $k \geq 3$.
+
+    We use induction on $n$.
+    Substituting $n = 1, 2$ shows that the inequality given in the problem holds.
+    Suppose now as an induction hypothesis that $k^3 + 20 > k^2 + 15k$ for some $k \geq 3$.
+    Then the following holds.
+    \begin{align*}
+        (k + 1)^3 + 20 &= k^3 + 3k^2 + 3k + 1 + 20\\
+                       &= (k^3 + 20) + (3k^2 + 3k + 1)\\
+                       &> (k^2 + 15k) + (3k^2 + 3k + 1) &\text{From the induction hyp.}\\
+                       &= 4k^2 + 18k + 1\\
+                       &\geq (k + 1)^2 + 15(k + 1) &\text{As shown above}
+    \end{align*}
+    Hence, by the induction principle, the given inequality holds for any $n \in \mathbb N$.
+\end{proof}
+
+\begin{exercise}
+    For $n \in \mathbb N$, when does $3^n > n^4$ hold?
+\end{exercise}
+\begin{sol}
+    It can be checked that $n = 1$ satisfies the given inequality, but $n = 2, 3, 4, 5, 6, 7$ do not by substituting the values.
+    We will show that $n \geq 8$ satisfies the given inequality using induction on $n$.
+    $3^8 = 65651 > 8^4 = 4096$, so $n = 8$ satisfies the given inequality.
+
+    Suppose now as an induction hypothesis that $3^k > k^4$ for some $k \geq 9$.
+    We need to show that the following two inequalities hold where $k \geq 9$::
+    \begin{align*}
+        k^4 &> 4k^3 - 6k^2 + 4k - 1\\
+        k^4 &> 12k^2 + 2
+    \end{align*}
+    The first inequality immediately follows from the fact that $(k - 1)^4 > 0$.
+    The second inequality can be modified: $(k^2 - 6)^2 > 38$.
+    It is obviously true.
+    Add the two inequalities:
+    \[
+        2k^4 > 4k^3 + 6k^2 + 4k + 1.
+    \]
+    Then,
+    \begin{align*}
+        3^{k + 1} &= 3 \cdot 3^k\\
+                  &> 3k^4 &\text{From the induction hyp.}\\
+                  &= k^4 + 2k^4\\
+                  &> k^4 + 4k^3 + 6k^2 + 4k + 1 &\text{As shown above}\\
+                  &= (k + 1)^4
+    \end{align*}
+    Hence, by the induction principle, the given inequality holds for any $n \geq 9$.
+
+    Therefore, the given inequality holds for $n = 1$ and $n \geq 9$.
+\end{sol}
+
+\begin{exercise}
+    If $n \in \mathbb N$ and $x, y \geq 0$, then $\left(\frac{x + y}{2}\right)^n \leq \frac{x^n + y^n}{2}$.
+\end{exercise}
+\begin{proof}
+    We use induction on $n$.
+    When $n = 1$, $\left( \frac{x+y}{2}\right)^1 \leq \frac{x^1 + y^1}{2}$, so the given inequality holds.
+
+    Suppose now as induction hypothesis that $\left( \frac{x + y}{2}\right)^k \leq \frac{x^k + y^k}{2}$ for some $k \geq 2$.
+    Then,
+    \begin{align*}
+        \frac{x + y}{2} \left( \frac{x + y}{2}\right)^k &\leq \frac{x + y}{2} \cdot \frac{x^k + y^k}{2} &\text{From the induction hyp.}\\
+                                                        &= \frac 14 \left[(x^{k+1} + y^{k+1}) + (x^k y + xy^k)\right]\\
+                                                        &\leq \frac 14 \left[(x^{k+1} + y^{k+1}) + (x^{k+1} + y^{k+1})\right]. &\text{by Theorem~\ref{thm:rearrange}}\\
+                                                        &= \frac{x^{k+1} + y^{k+1}}{2}.
+    \end{align*}
+    Hence, from the induction principle, the given inequality holds for all $n \in \mathbb N$.
+\end{proof}
+
+\begin{exercise}
+    Two players move alternately in a game that starts with two equal-sized piles of coins.
+    One move consists of removing some positive number of coins from one pile.
+    The winner is the player who removes the last coin.
+    Who will be the winner?
+\end{exercise}
+\begin{sol}
+    The second player will win.
+    The following is the winning strategy.
+
+    \noindent\textbf{Case 1}: The first player removes all coins from one pile\\
+    \indent Remove all coins from the other pile.
+
+    \noindent\textbf{Case 2}: The first player removes some coins from one pile\\
+    \indent Remove all coins except for one from the pile the first player removed some coins.
+    Now there are two piles--one with one coin and one without a coin removed.
+    Let the first pile be $A$, and the latter be $B$.
+    The first player will now try to remove some coins from $B$, since taking a coin from $A$ would lead to the second player taking all coins from $B$, making the second player the winner.
+    Now, the second player should remove all coins from $B$ except one, similarly as the last move.
+    It is evident that the second player will win after this move.
+\end{sol}
+
+\begin{exercise}
+    Let $\{a_n\}$ be a sequence satisfying $a_1 = 2, a_2 = 8$ and $a_n = 4(a_{n-1} - a_{n-2})$ for $n \geq 3$.
+    Find a formula for $a_n$.
+\end{exercise}
+\begin{sol}
+    Define a new sequence $b_n = a_n - 2a_{n-1}$ for $n \geq 2$.
+    From the recurrence relation of $a_n$, it can be implied that $b_n = 2b_{n-1}$ for $n \geq 3$.
+    Thus, $b_n = 2^{n-2} b_2 = 2^n$.
+    Now we have
+    \[
+        a_n - 2a_{n-1} = 2^n.
+    \]
+    Then,
+    \begin{align*}
+        a_n - 2a_{n-1} &= 2^n,\\
+        2(a_{n-1} - 2a_{n-2}) &= 2^n,\\
+        \vdots\\
+        2^{n-2} (a_2 - 2a_1) &= 2^n.
+    \end{align*}
+    Add all the equations:
+    \[
+        a_n - 2^{n-2} a_1 = 2^n (n - 1).
+    \]
+    Therefore, $a_n = 2^n n$.
+\end{sol}
+
+\begin{exercise}
+    Show that the Fibonacci sequence $\{f_n\}$ have the following formula:
+    \[
+        f_n = \frac{\alpha^n - \beta^n}{\sqrt 5}
+    \]
+    where $\alpha = \frac{1 + \sqrt 5}{2}$ and $\beta = \frac{1 - \sqrt 5}{2}$.
+\end{exercise}
+\begin{proof}
+    \begin{align*}
+        f_1 &= \frac{1}{\sqrt 5} \left( \frac{1 + \sqrt 5}{2} - \frac{1 - \sqrt 5}{2}\right) = 1\\
+        f_2 &= \frac{1}{\sqrt 5} \left( \left(\frac{1 + \sqrt 5}{2}\right)^2 - \left(\frac{1 - \sqrt 5}{2}\right)^2\right)\\
+            &= \frac{1}{\sqrt 5} \left( \frac{6 + 2\sqrt 5}{4} - \frac{6 - 2 \sqrt 5}{4}\right) = 1\\
+    \end{align*}
+    Thus, we see that the initial conditions match that of the Fibonacci sequence.
+
+    We will show that $f_{n+1} = f_{n} + f_{n-1}$ for $n \geq 2$.
+    \begin{align*}
+        f_{n + 1} &= \frac{\alpha^{n+1} - \beta^{n+1}}{\sqrt 5}\\
+                  &= \frac{\frac{1 + \sqrt 5}{2} \alpha^n - \frac{1 - \sqrt 5}{2} \beta^n}{\sqrt 5}\\
+                  &= \frac{\frac 12 (\alpha^n - \beta^n) + \frac{\sqrt 5}{2} (\alpha^n + \beta^n)}{\sqrt 5}\\
+                  &= \frac{(\alpha^n - \beta^n) - \frac 12 (\alpha^n - \beta^n) + \frac{\sqrt 5}{2} (\alpha^n + \beta^n)}{\sqrt 5}\\
+                  &= f_n + \frac{\frac{\sqrt 5 - 1}{2} \alpha^n + \frac{\sqrt 5 + 1}{2}\beta^n}{\sqrt 5}\\
+                  &= f_n + \frac{\frac{\sqrt 5 - 1}{2} \cdot \frac{1 + \sqrt 5}{2} \alpha^{n-1} + \frac{\sqrt 5 + 1}{2} \cdot \frac{1 - \sqrt 5}{2} \beta^{n-1}}{\sqrt 5}\\
+                  &= f_n + \frac{\alpha^{n-1} - \beta^{n-1}}{\sqrt 5}\\
+                  &= f_n + f_{n-1}
+    \end{align*}
+    Therefore, the Fibonacci sequence follows the given formula.
+\end{proof}
+\end{document}
